@@ -30,7 +30,7 @@ single curve proves underfitting. The V2 nested protocol tests these possibiliti
 Full-training selected-epoch summaries:
 
                         min  median  max
-family    intervention                  
+family    intervention
 mlp       standard       14    20.0   26
 multiview resampled       6    12.0   14
           standard        6    12.0   15

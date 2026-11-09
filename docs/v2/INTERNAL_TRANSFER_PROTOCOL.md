@@ -58,3 +58,11 @@ seeds inside each draw; shared source fits and overlapping draws imply dependenc
 geometry invalidity, all-share/head-only frequency, each module's ADAPT frequency and mask
 agreement, uncertainty R/U and permutation evidence. More ADAPT flags alone is not success.
 No target evaluation before selections/checkpoints/calibration records are locked.
+
+Before transfer fitting, a secondary cost-matched full fine-tuning control is registered:
+combine that draw's disjoint fitting and selector samples for fitting (4P labels), while
+using the same stopping pool. This gives full fine-tuning the selector's total label budget.
+It is additional to the primary same-fitting-sample full comparator, not a replacement.
+V2 legacy MMD preserves source-RMS normalization and top-half scoring, but reduces its
+historical maximum from1024 to128/domain for the finite engineering budget; calibrated
+MMD already uses128. This sample-budget change is explicit, not a new selector threshold.

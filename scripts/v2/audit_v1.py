@@ -143,5 +143,7 @@ Full-training selected-epoch summaries:\n\n{main.groupby(["family", "interventio
 
 The CSV and plotted curves are aggregate per-fit/per-epoch records, not participant data.
 """
-(root / "docs/v2/V1_TRAINING_DIAGNOSTIC.md").write_text(text)
+(root / "docs/v2/V1_TRAINING_DIAGNOSTIC.md").write_text(
+    "\n".join(line.rstrip() for line in text.splitlines()) + "\n"
+)
 print(frame.groupby(["family", "analysis"]).best_bce_epoch.agg(["count", "min", "median", "max"]))
