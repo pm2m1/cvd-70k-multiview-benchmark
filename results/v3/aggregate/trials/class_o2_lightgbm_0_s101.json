@@ -1,0 +1,43 @@
+{
+  "run": "class_o2_lightgbm_0_s101",
+  "spec": {
+    "config": {
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "dropout": 0.0,
+      "optimizer": "adamw",
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "epochs": 120,
+      "patience": 16,
+      "batch": 256,
+      "stop": "ap",
+      "block": "missing",
+      "architecture": "concat",
+      "loss": "bce",
+      "family": "lightgbm",
+      "variant": 0,
+      "rounds": 1200,
+      "depth": 3,
+      "tree_lr": 0.03,
+      "l2": 3.0,
+      "child": 20
+    },
+    "seed": 101,
+    "fit": "dd2dd0966c65989b8e5fa891d4786f4b0bff7f43d573c6b43fc82a3f64a023c3",
+    "stop": "62886d599c6281656bf52d81200dd4f808f16a9a906e14a56d3d2d48ac5fffc6"
+  },
+  "spec_hash": "d74ba1c2a602f318bf8231221bf3e0a623dd6de5e355bd9d9b403c16848a319c",
+  "checkpoint_sha256": "37c968b80140d62c78dcd4858a653779ded23f95817a527c5c50a6952b7dc376",
+  "elapsed_seconds": 1.1721230829134583,
+  "best_epoch": 313,
+  "fit_seconds": 0.4927105833776295,
+  "parameter_count": null,
+  "total_parameters": null,
+  "training_device": "cpu",
+  "stopping_objective": "sklearn_ap_and_logloss"
+}

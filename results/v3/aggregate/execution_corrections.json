@@ -1,0 +1,24 @@
+[
+  {
+    "stage": "transfer source representation extraction",
+    "error": "Missing representations=True caused unpacking failure after source fit; no target fit or evaluation opened",
+    "correction": "Pass explicit representation-return flag; add contract regression test",
+    "historical_files_changed": false,
+    "successful_checkpoints_overwritten": false
+  },
+  {
+    "stage": "ranking loss MPS",
+    "error": "Deterministic MPS index accumulation backward unsupported",
+    "correction": "Ranking-loss candidates use deterministic CPU; other neural candidates retain MPS; candidate objectives unchanged"
+  },
+  {
+    "stage": "soft adaptation training",
+    "error": "Generic gate penalty mistook radial gates reporting method for a Parameter",
+    "correction": "Apply gate penalty only to actual nn.Parameter gates; synthetic radial-trainer regression test added"
+  },
+  {
+    "stage": "random/shuffled soft caps",
+    "error": "NumPy Boolean rejected by torch Parameter requires_grad",
+    "correction": "Convert cap comparison to native bool; mathematical policy unchanged"
+  }
+]

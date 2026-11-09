@@ -1,0 +1,43 @@
+{
+  "run": "transfer_o2_p1000_target_xgb_cost",
+  "spec": {
+    "config": {
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "dropout": 0.0,
+      "optimizer": "adamw",
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "epochs": 120,
+      "patience": 16,
+      "batch": 256,
+      "stop": "ap",
+      "block": "base",
+      "architecture": "concat",
+      "loss": "bce",
+      "family": "xgboost",
+      "variant": 0,
+      "rounds": 600,
+      "depth": 3,
+      "tree_lr": 0.03,
+      "l2": 3.0,
+      "child": 20
+    },
+    "seed": 303,
+    "fit": "a79253d9068f3e44f93f2006ea1686e3f32d672caa2720526b1792211467a043",
+    "stop": "37f55805288d98c96ebddb880b0caee291f3582e141e17ae40e6a99e265fca0f"
+  },
+  "spec_hash": "a62a06d24abec6126e55408f3580b1391ae1ee168e461085514be3613ee641b3",
+  "checkpoint_sha256": "d03ed665ef0e62f46891279a3193cc6ad504397c1092fe8aec7d9b64b68c7852",
+  "elapsed_seconds": 0.8535070419311523,
+  "best_epoch": 568,
+  "fit_seconds": 0.2157342080026865,
+  "parameter_count": null,
+  "total_parameters": null,
+  "training_device": "cpu",
+  "stopping_objective": "logloss"
+}

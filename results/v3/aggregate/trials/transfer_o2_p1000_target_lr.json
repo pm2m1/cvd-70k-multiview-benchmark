@@ -1,0 +1,41 @@
+{
+  "run": "transfer_o2_p1000_target_lr",
+  "spec": {
+    "config": {
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "dropout": 0.0,
+      "optimizer": "adamw",
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "epochs": 120,
+      "patience": 16,
+      "batch": 256,
+      "stop": "ap",
+      "block": "base",
+      "architecture": "concat",
+      "loss": "bce",
+      "family": "logistic",
+      "variant": 0,
+      "rounds": 600,
+      "depth": 3,
+      "tree_lr": 0.03,
+      "l2": 3.0,
+      "child": 20
+    },
+    "seed": 303,
+    "fit": "a01a9a07055b8478c7e836184622a1132cd96d8b2997c84f289b9ae601344361",
+    "stop": "37f55805288d98c96ebddb880b0caee291f3582e141e17ae40e6a99e265fca0f"
+  },
+  "spec_hash": "80011ef4f90117d0c756ef846b85a73763f15d1bcb4e8d7e70bccebe138aeef0",
+  "checkpoint_sha256": "e3d303fe814aaa5f9995354c2616759ca5e9bf8a7b1dba54986488789bc094a5",
+  "elapsed_seconds": 0.006337499711662531,
+  "fit_seconds": 0.00273333303630352,
+  "parameter_count": 17,
+  "best_epoch": 18,
+  "training_device": "cpu"
+}

@@ -1,0 +1,220 @@
+{
+  "run": "transfer_o2_p1000_reg_shuffled",
+  "spec": {
+    "method": "reg_shuffled",
+    "config": {
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "dropout": 0.0,
+      "optimizer": "adamw",
+      "lr": 0.0003,
+      "weight_decay": 0.0,
+      "schedule": "constant",
+      "epochs": 80,
+      "patience": 12,
+      "batch": 128,
+      "stop": "ap",
+      "block": "base",
+      "architecture": "concat",
+      "loss": "bce",
+      "family": "neural"
+    },
+    "seed": 303,
+    "source": "b1ba9b3a683bd6c14825b5cd92fdea3fa3414491d739d7811052d6beecd3224d",
+    "fit": "a01a9a07055b8478c7e836184622a1132cd96d8b2997c84f289b9ae601344361",
+    "stop": "37f55805288d98c96ebddb880b0caee291f3582e141e17ae40e6a99e265fca0f",
+    "evidence": "9dd52c7c6188f15ddb4cc4e924a9323800e1018db11f1f59f1535835c365a3c0"
+  },
+  "spec_hash": "697ce3afdc56ec9439f1043291f90b2defd891fe17cc9a72cafca9fda8f3375a",
+  "checkpoint_sha256": "1c8094dbe146123aebc39a4b43ece10ddaaac88ba2a117e7f7b989cb69dd0ea3",
+  "elapsed_seconds": 2.5281968330964446,
+  "best_epoch": 5,
+  "epochs_completed": 17,
+  "curve": [
+    {
+      "epoch": 0,
+      "train_loss": null,
+      "validation_ap": 0.6769259416261114,
+      "validation_auroc": 0.7384,
+      "validation_bce": 0.6157259941101074
+    },
+    {
+      "epoch": 1,
+      "train_loss": 0.6074810400009155,
+      "validation_ap": 0.6836803822513782,
+      "validation_auroc": 0.7376,
+      "validation_bce": 0.6062451601028442
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.6037130851745606,
+      "validation_ap": 0.6796407342980613,
+      "validation_auroc": 0.7376,
+      "validation_bce": 0.6047737002372742
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.6022287087440491,
+      "validation_ap": 0.6816614554954517,
+      "validation_auroc": 0.7407999999999999,
+      "validation_bce": 0.6052079796791077
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.602275643825531,
+      "validation_ap": 0.6821722945835786,
+      "validation_auroc": 0.7396,
+      "validation_bce": 0.6038608551025391
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.601574821472168,
+      "validation_ap": 0.6862344584599764,
+      "validation_auroc": 0.7448,
+      "validation_bce": 0.6015875339508057
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.6016987371444702,
+      "validation_ap": 0.6780857938918454,
+      "validation_auroc": 0.7388,
+      "validation_bce": 0.6038557291030884
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.6011798396110535,
+      "validation_ap": 0.678915923345868,
+      "validation_auroc": 0.7416,
+      "validation_bce": 0.6011678576469421
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.6006166167259216,
+      "validation_ap": 0.6761892963832723,
+      "validation_auroc": 0.7416,
+      "validation_bce": 0.6017629504203796
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.6005049705505371,
+      "validation_ap": 0.6774029166216683,
+      "validation_auroc": 0.7412,
+      "validation_bce": 0.6030142307281494
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.6004784603118897,
+      "validation_ap": 0.6764601332709153,
+      "validation_auroc": 0.7436,
+      "validation_bce": 0.6018393635749817
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.6002043113708496,
+      "validation_ap": 0.6720761719169663,
+      "validation_auroc": 0.7424,
+      "validation_bce": 0.6012884378433228
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.6012677011489869,
+      "validation_ap": 0.674268552927805,
+      "validation_auroc": 0.7452000000000001,
+      "validation_bce": 0.6003488302230835
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.6001540603637695,
+      "validation_ap": 0.670596288329193,
+      "validation_auroc": 0.742,
+      "validation_bce": 0.6006872653961182
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.6014033117294312,
+      "validation_ap": 0.6736052084566565,
+      "validation_auroc": 0.7432,
+      "validation_bce": 0.6001211404800415
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.6003118844032288,
+      "validation_ap": 0.6751028950120344,
+      "validation_auroc": 0.7452000000000001,
+      "validation_bce": 0.6002179980278015
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.5995850987434387,
+      "validation_ap": 0.6689687656716545,
+      "validation_auroc": 0.7408,
+      "validation_bce": 0.6002112030982971
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.5995496315956116,
+      "validation_ap": 0.6711107533167251,
+      "validation_auroc": 0.7424,
+      "validation_bce": 0.600243091583252
+    }
+  ],
+  "parameter_count": 7985,
+  "total_parameters": 7985,
+  "fit_seconds": 2.5104875420220196,
+  "training_device": "mps",
+  "initial_checkpoint_eligible": true,
+  "mask": {
+    "view:background": true,
+    "view:haemodynamic": true,
+    "view:anthropometric": true,
+    "view:metabolic": true,
+    "view:behaviour": true,
+    "fusion1": true,
+    "fusion2": true
+  },
+  "penalties": {
+    "view:background": 0.50995,
+    "view:haemodynamic": 0.42840452813310165,
+    "view:anthropometric": 0.4926711695824417,
+    "view:metabolic": 0.048384305801548635,
+    "view:behaviour": 0.3506692046064745,
+    "fusion1": 0.53965,
+    "fusion2": 0.43024307600867223
+  },
+  "gates": null,
+  "drift": {
+    "view:background": {
+      "absolute": 0.007526033092290163,
+      "relative": 0.001499883714132011
+    },
+    "view:haemodynamic": {
+      "absolute": 0.01119166985154152,
+      "relative": 0.0022392491810023785
+    },
+    "view:anthropometric": {
+      "absolute": 0.007942897267639637,
+      "relative": 0.0016974563477560878
+    },
+    "view:metabolic": {
+      "absolute": 0.0443485863506794,
+      "relative": 0.009283829480409622
+    },
+    "view:behaviour": {
+      "absolute": 0.01156657561659813,
+      "relative": 0.0024590531829744577
+    },
+    "fusion1": {
+      "absolute": 0.05817379429936409,
+      "relative": 0.0062461914494633675
+    },
+    "fusion2": {
+      "absolute": 0.053213346749544144,
+      "relative": 0.008002345450222492
+    }
+  },
+  "source_state_sha256": "f5972e1da3d4434b0f7c11feef3657e6360f6c9b23740a14c9a26caac879f3e9",
+  "source_verified": true
+}

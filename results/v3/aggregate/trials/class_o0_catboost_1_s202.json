@@ -1,0 +1,43 @@
+{
+  "run": "class_o0_catboost_1_s202",
+  "spec": {
+    "config": {
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "dropout": 0.0,
+      "optimizer": "adamw",
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "epochs": 120,
+      "patience": 16,
+      "batch": 256,
+      "stop": "ap",
+      "block": "missing",
+      "architecture": "concat",
+      "loss": "bce",
+      "family": "catboost",
+      "variant": 1,
+      "rounds": 1200,
+      "depth": 5,
+      "tree_lr": 0.05,
+      "l2": 10.0,
+      "child": 60
+    },
+    "seed": 202,
+    "fit": "6daebc0cfcdd230beb9f32f78312778e2202b6aac8213371e80d598981122aa4",
+    "stop": "469bd01ebbf5d907778822faf52189f63f58d718061716580f1d12a59190354f"
+  },
+  "spec_hash": "e6b28cfb14f69c662586b2e0cc5ad75a812d2fe12e4c6f1ef95f06d967c95217",
+  "checkpoint_sha256": "383ee82a63163c6177e0fdaf024009ff8231566e1de27065c5bc761a8fedb0d6",
+  "elapsed_seconds": 1.783832041081041,
+  "best_epoch": 229,
+  "fit_seconds": 1.0435923747718334,
+  "parameter_count": null,
+  "total_parameters": null,
+  "training_device": "cpu",
+  "stopping_objective": "logloss"
+}

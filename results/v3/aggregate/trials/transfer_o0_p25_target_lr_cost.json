@@ -1,0 +1,41 @@
+{
+  "run": "transfer_o0_p25_target_lr_cost",
+  "spec": {
+    "config": {
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "dropout": 0.0,
+      "optimizer": "adamw",
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "epochs": 120,
+      "patience": 16,
+      "batch": 256,
+      "stop": "ap",
+      "block": "base",
+      "architecture": "concat",
+      "loss": "bce",
+      "family": "logistic",
+      "variant": 0,
+      "rounds": 600,
+      "depth": 3,
+      "tree_lr": 0.03,
+      "l2": 3.0,
+      "child": 20
+    },
+    "seed": 101,
+    "fit": "f054a31cb0913cb745f35bed39744f47a3cd1450d7b362fcb13d4192a171d0ac",
+    "stop": "31c45d28a0e8f8b5b0c96f46d8b87ce4a58542bcae4ee4d4c5fe2d615335249a"
+  },
+  "spec_hash": "a40a6cb71deb215489252b933f6a7c07da82822e826448b42e7c287359a14269",
+  "checkpoint_sha256": "9f01923a2a96e8a2315363b2242c8b9cfda8d310648929e064c54121d8db19d9",
+  "elapsed_seconds": 0.0041420841589570045,
+  "fit_seconds": 0.001999666914343834,
+  "parameter_count": 17,
+  "best_epoch": 17,
+  "training_device": "cpu"
+}
