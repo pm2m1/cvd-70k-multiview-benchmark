@@ -1,0 +1,41 @@
+{
+  "protocol_version": "1.0",
+  "split_seed": 20261109,
+  "seeds": [101, 202, 303, 404, 505],
+  "families": ["logistic", "random_forest", "xgboost", "mlp", "multiview"],
+  "prevalences": [0.5, 0.25, 0.15, 0.0742],
+  "interventions": ["standard", "weighted", "resampled"],
+  "neural": {
+    "embedding": 16,
+    "fusion": [64, 32],
+    "flat_hidden": [96, 64],
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "batch_size": 1024,
+    "epochs": 60,
+    "patience": 8
+  },
+  "search": {
+    "logistic": [{"C": 0.1}, {"C": 1.0}],
+    "random_forest": [{"max_depth": 8}, {"max_depth": null}],
+    "xgboost": [{"max_depth": 3}, {"max_depth": 5}],
+    "mlp": [{"lr": 0.001}, {"lr": 0.0003}],
+    "multiview": [{"lr": 0.001}, {"lr": 0.0003}]
+  },
+  "random_forest": {"n_estimators": 200, "min_samples_leaf": 10, "n_jobs": 2},
+  "xgboost": {
+    "n_estimators": 600,
+    "learning_rate": 0.05,
+    "subsample": 0.9,
+    "colsample_bytree": 0.9,
+    "reg_lambda": 1.0,
+    "tree_method": "hist",
+    "n_jobs": 2,
+    "early_stopping_rounds": 30,
+    "eval_metric": "logloss"
+  },
+  "bootstrap_replicates": 1000,
+  "threshold_objective": "validation balanced accuracy; grid 0.01..0.99, step 0.01; ties closest to 0.50 then lower",
+  "cleaning_modes": ["minimal", "strict"],
+  "anthropometry_sensitivity": ["bmi_only", "parents_only"]
+}

@@ -1,0 +1,231 @@
+{
+  "archive_sha256": "b78ff607480810c3e27de3e11d52c4962a3a81dbb3d69365e1cf3394a67c2b23",
+  "entries": [
+    {
+      "name": "cardio_train.csv",
+      "bytes": 2941524,
+      "compressed_bytes": 759896,
+      "crc": 963133716
+    }
+  ],
+  "shape": [
+    70000,
+    13
+  ],
+  "columns": [
+    "id",
+    "age",
+    "gender",
+    "height",
+    "weight",
+    "ap_hi",
+    "ap_lo",
+    "cholesterol",
+    "gluc",
+    "smoke",
+    "alco",
+    "active",
+    "cardio"
+  ],
+  "dtypes": {
+    "id": "int64",
+    "age": "int64",
+    "gender": "int64",
+    "height": "int64",
+    "weight": "float64",
+    "ap_hi": "int64",
+    "ap_lo": "int64",
+    "cholesterol": "int64",
+    "gluc": "int64",
+    "smoke": "int64",
+    "alco": "int64",
+    "active": "int64",
+    "cardio": "int64"
+  },
+  "missing": {
+    "id": 0,
+    "age": 0,
+    "gender": 0,
+    "height": 0,
+    "weight": 0,
+    "ap_hi": 0,
+    "ap_lo": 0,
+    "cholesterol": 0,
+    "gluc": 0,
+    "smoke": 0,
+    "alco": 0,
+    "active": 0,
+    "cardio": 0
+  },
+  "class_counts": {
+    "0": 35021,
+    "1": 34979
+  },
+  "prevalence": 0.4997,
+  "id_unique": true,
+  "duplicates_including_id": 0,
+  "duplicate_labeled_rows_excluding_id": 24,
+  "feature_identical_groups_raw": 41,
+  "contradictory_raw_groups": 17,
+  "modeled_duplicate_groups": 41,
+  "modeled_contradictory_groups": 17,
+  "modeled_group_count": 69959,
+  "flags_overlapping": {
+    "age_outside_18_100": 0,
+    "height_outside_120_220_cm": 53,
+    "weight_outside_30_200_kg": 7,
+    "systolic_outside_80_250": 247,
+    "diastolic_outside_40_150": 1034,
+    "systolic_not_above_diastolic": 1236,
+    "bmi_outside_10_70": 3
+  },
+  "flagged_rows_union": 1397,
+  "minimal_retained": 70000,
+  "strict_retained": 68603,
+  "strict_excluded": 1397,
+  "postmask_missing": {
+    "id": 0,
+    "age": 0,
+    "gender": 0,
+    "height": 53,
+    "weight": 7,
+    "ap_hi": 1287,
+    "ap_lo": 1300,
+    "cholesterol": 0,
+    "gluc": 0,
+    "smoke": 0,
+    "alco": 0,
+    "active": 0,
+    "cardio": 0,
+    "age_years": 0,
+    "bmi": 63
+  },
+  "ranges": {
+    "id": {
+      "min": 0.0,
+      "max": 99999.0
+    },
+    "age": {
+      "min": 10798.0,
+      "max": 23713.0
+    },
+    "gender": {
+      "min": 1.0,
+      "max": 2.0
+    },
+    "height": {
+      "min": 55.0,
+      "max": 250.0
+    },
+    "weight": {
+      "min": 10.0,
+      "max": 200.0
+    },
+    "ap_hi": {
+      "min": -150.0,
+      "max": 16020.0
+    },
+    "ap_lo": {
+      "min": -70.0,
+      "max": 11000.0
+    },
+    "cholesterol": {
+      "min": 1.0,
+      "max": 3.0
+    },
+    "gluc": {
+      "min": 1.0,
+      "max": 3.0
+    },
+    "smoke": {
+      "min": 0.0,
+      "max": 1.0
+    },
+    "alco": {
+      "min": 0.0,
+      "max": 1.0
+    },
+    "active": {
+      "min": 0.0,
+      "max": 1.0
+    },
+    "cardio": {
+      "min": 0.0,
+      "max": 1.0
+    }
+  },
+  "categories": {
+    "gender": {
+      "1": 45530,
+      "2": 24470
+    },
+    "cholesterol": {
+      "1": 52385,
+      "2": 9549,
+      "3": 8066
+    },
+    "gluc": {
+      "1": 59479,
+      "2": 5190,
+      "3": 5331
+    },
+    "smoke": {
+      "0": 63831,
+      "1": 6169
+    },
+    "alco": {
+      "0": 66236,
+      "1": 3764
+    },
+    "active": {
+      "0": 13739,
+      "1": 56261
+    }
+  },
+  "delimiter": ";",
+  "csv_sha256": "21a705d23381b0dfd6a6416da701b490744f1fc3b47e9ff3db3968c420ffa10c",
+  "split_seed": 20261109,
+  "split_file_sha256": "af2a78195ab5e972a616ea1aea4a40811050d79fb1779e6e38b2ab50c6ebe899",
+  "partitions": {
+    "minimal": {
+      "train": {
+        "n": 48999,
+        "positive": 24485,
+        "negative": 24514,
+        "prevalence": 0.4997040755933795
+      },
+      "validation": {
+        "n": 10500,
+        "positive": 5247,
+        "negative": 5253,
+        "prevalence": 0.4997142857142857
+      },
+      "test": {
+        "n": 10501,
+        "positive": 5247,
+        "negative": 5254,
+        "prevalence": 0.49966669840967526
+      }
+    },
+    "strict": {
+      "train": {
+        "n": 48039,
+        "positive": 23764,
+        "negative": 24275,
+        "prevalence": 0.49468140469202104
+      },
+      "validation": {
+        "n": 10288,
+        "positive": 5096,
+        "negative": 5192,
+        "prevalence": 0.4953343701399689
+      },
+      "test": {
+        "n": 10276,
+        "positive": 5078,
+        "negative": 5198,
+        "prevalence": 0.49416115219929935
+      }
+    }
+  }
+}
