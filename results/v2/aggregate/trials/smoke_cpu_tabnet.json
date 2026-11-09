@@ -1,0 +1,99 @@
+{
+  "specification": {
+    "run_id": "smoke_cpu_tabnet",
+    "config": {
+      "family": "tabnet",
+      "name": "tabnet0",
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "hidden": [
+        96,
+        64
+      ],
+      "dropout": 0.0,
+      "lr": 0.02,
+      "batch": 1024,
+      "epochs": 2,
+      "patience": 2,
+      "stop": "ap",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "base",
+      "scale": "standard",
+      "decision_width": 8,
+      "steps": 3,
+      "lambda_sparse": 0.001
+    },
+    "seed": 101,
+    "fixed_epochs": null,
+    "intervention": "standard",
+    "train_membership_sha256": "6495e73e025c4360c5e4fd232d4c0f2d763588bc61f4d5516bda168713f241b9",
+    "validation_membership_sha256": "5c923b4fdc4c8c2cffbc2d0e29c5715e9020498fa8ef98dc0a0375d4d949eecb"
+  },
+  "training": {
+    "best_epoch": 1,
+    "epochs_completed": 2,
+    "parameter_count": 6704,
+    "fit_seconds": 0.04999949969351292,
+    "curve": [
+      {
+        "epoch": 1,
+        "train_loss": 0.8416768908500671,
+        "validation_ap": 0.5727582884473745
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.7493493556976318,
+        "validation_ap": 0.5535909351855344
+      }
+    ],
+    "aggregate_feature_importance": [
+      0.07414650944026024,
+      0.06038807189958239,
+      0.07410577918887629,
+      0.058084058961663694,
+      0.03144248591151677,
+      0.04156767405110015,
+      0.07122253817374313,
+      0.037553780693746965,
+      0.14049942552203648,
+      0.04341068143086109,
+      0.017502630964501904,
+      0.07556000309063031,
+      0.06846883694658228,
+      0.029433012620994608,
+      0.029396862810770467,
+      0.14721764829313314
+    ]
+  },
+  "train_n": 800,
+  "train_positive": 407,
+  "checkpoint_sha256": "1b50590841cf777d9fc8bbc55ea90423744c481ff343592c6a0bf241a9a6759f",
+  "status": "completed",
+  "validation": {
+    "ap": 0.5727582884473745,
+    "auroc": 0.5977272727272727,
+    "brier": 0.2512074410915375,
+    "log_loss": 0.7103533744812012,
+    "accuracy": 0.62,
+    "balanced_accuracy": 0.6111111111111112,
+    "recall": 0.5222222222222223,
+    "sensitivity": 0.5222222222222223,
+    "specificity": 0.7,
+    "precision": 0.5875,
+    "f1": 0.5529411764705883,
+    "ece_10": 0.11367242064327002,
+    "tn": 77,
+    "fp": 33,
+    "fn": 43,
+    "tp": 47,
+    "n": 200,
+    "positive": 90,
+    "prevalence": 0.45,
+    "threshold": 0.5
+  }
+}

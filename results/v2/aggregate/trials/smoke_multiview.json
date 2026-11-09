@@ -1,0 +1,95 @@
+{
+  "specification": {
+    "run_id": "smoke_multiview",
+    "config": {
+      "family": "multiview",
+      "name": "v1_equivalent",
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "hidden": [
+        96,
+        64
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "batch": 1024,
+      "epochs": 2,
+      "patience": 2,
+      "stop": "bce",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "base",
+      "scale": "standard"
+    },
+    "seed": 101,
+    "fixed_epochs": null,
+    "intervention": "standard",
+    "train_membership_sha256": "6495e73e025c4360c5e4fd232d4c0f2d763588bc61f4d5516bda168713f241b9",
+    "validation_membership_sha256": "5c923b4fdc4c8c2cffbc2d0e29c5715e9020498fa8ef98dc0a0375d4d949eecb"
+  },
+  "training": {
+    "best_epoch": 2,
+    "epochs_completed": 2,
+    "parameter_count": 7985,
+    "fit_seconds": 0.2838136670179665,
+    "curve": [
+      {
+        "epoch": 0,
+        "train_loss": null,
+        "lr": 0.001,
+        "validation_bce": 0.7126960158348083,
+        "validation_ap": 0.49647935310856733,
+        "validation_auroc": 0.538989898989899
+      },
+      {
+        "epoch": 1,
+        "train_loss": 0.6935563683509827,
+        "lr": 0.001,
+        "validation_bce": 0.6676486134529114,
+        "validation_ap": 0.5625159167006418,
+        "validation_auroc": 0.6395959595959596
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.6483838558197021,
+        "lr": 0.001,
+        "validation_bce": 0.6444432735443115,
+        "validation_ap": 0.5838170215108784,
+        "validation_auroc": 0.6920202020202021
+      }
+    ],
+    "pos_weight": 1.0,
+    "fit_positive": 407,
+    "fit_negative": 393
+  },
+  "train_n": 800,
+  "train_positive": 407,
+  "checkpoint_sha256": "c9a17af222e78b7af48a6bf5d2c873807e692acd2bd993d8cb5ce75c875d9dc4",
+  "status": "completed",
+  "validation": {
+    "ap": 0.5838170215108784,
+    "auroc": 0.6920202020202021,
+    "brier": 0.2258620411157608,
+    "log_loss": 0.6444432139396667,
+    "accuracy": 0.645,
+    "balanced_accuracy": 0.6308080808080808,
+    "recall": 0.4888888888888889,
+    "sensitivity": 0.4888888888888889,
+    "specificity": 0.7727272727272727,
+    "precision": 0.6376811594202898,
+    "f1": 0.5534591194968553,
+    "ece_10": 0.0913950242102146,
+    "tn": 85,
+    "fp": 25,
+    "fn": 46,
+    "tp": 44,
+    "n": 200,
+    "positive": 90,
+    "prevalence": 0.45,
+    "threshold": 0.5
+  }
+}

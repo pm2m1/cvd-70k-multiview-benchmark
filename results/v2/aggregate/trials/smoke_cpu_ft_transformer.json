@@ -1,0 +1,97 @@
+{
+  "specification": {
+    "run_id": "smoke_cpu_ft_transformer",
+    "config": {
+      "family": "ft_transformer",
+      "name": "ft0",
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "hidden": [
+        96,
+        64
+      ],
+      "dropout": 0.1,
+      "lr": 0.0003,
+      "batch": 512,
+      "epochs": 2,
+      "patience": 2,
+      "stop": "ap",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "base",
+      "scale": "standard",
+      "token_width": 32,
+      "blocks": 2
+    },
+    "seed": 101,
+    "fixed_epochs": null,
+    "intervention": "standard",
+    "train_membership_sha256": "6495e73e025c4360c5e4fd232d4c0f2d763588bc61f4d5516bda168713f241b9",
+    "validation_membership_sha256": "5c923b4fdc4c8c2cffbc2d0e29c5715e9020498fa8ef98dc0a0375d4d949eecb"
+  },
+  "training": {
+    "best_epoch": 2,
+    "epochs_completed": 2,
+    "parameter_count": 18089,
+    "fit_seconds": 0.06320037506520748,
+    "curve": [
+      {
+        "epoch": 0,
+        "train_loss": null,
+        "lr": 0.0003,
+        "validation_bce": 0.7040836215019226,
+        "validation_ap": 0.5753250099637943,
+        "validation_auroc": 0.6154545454545455
+      },
+      {
+        "epoch": 1,
+        "train_loss": 0.7340993952751159,
+        "lr": 0.0003,
+        "validation_bce": 0.6850953698158264,
+        "validation_ap": 0.5871673396921214,
+        "validation_auroc": 0.6553535353535354
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.7082241821289063,
+        "lr": 0.0003,
+        "validation_bce": 0.6779389977455139,
+        "validation_ap": 0.6231884297721513,
+        "validation_auroc": 0.6872727272727274
+      }
+    ],
+    "pos_weight": 1.0,
+    "fit_positive": 407,
+    "fit_negative": 393
+  },
+  "train_n": 800,
+  "train_positive": 407,
+  "checkpoint_sha256": "42b537031fd18a6b3057c62afb9f7c3cd197e441469bd303c0c6cb0dd5bdc3ec",
+  "status": "completed",
+  "validation": {
+    "ap": 0.6231884297721513,
+    "auroc": 0.6872727272727274,
+    "brier": 0.2424497753381729,
+    "log_loss": 0.6779389977455139,
+    "accuracy": 0.55,
+    "balanced_accuracy": 0.5,
+    "recall": 0.0,
+    "sensitivity": 0.0,
+    "specificity": 1.0,
+    "precision": 0.0,
+    "f1": 0.0,
+    "ece_10": 0.005224335193634022,
+    "tn": 110,
+    "fp": 0,
+    "fn": 90,
+    "tp": 0,
+    "n": 200,
+    "positive": 90,
+    "prevalence": 0.45,
+    "threshold": 0.5
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "specification": {
+    "run_id": "smoke_xgboost",
+    "config": {
+      "family": "xgboost",
+      "name": "xgb0",
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "hidden": [
+        96,
+        64
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "batch": 1024,
+      "epochs": 2,
+      "patience": 2,
+      "stop": "bce",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "base",
+      "scale": "standard",
+      "xgb": {
+        "max_depth": 3,
+        "min_child_weight": 8.076907036851535,
+        "learning_rate": 0.062104185284079766,
+        "subsample": 0.7006558293680266,
+        "colsample_bytree": 0.7794942756490247,
+        "reg_alpha": 0.0005077948203063708,
+        "reg_lambda": 10.970207887361752,
+        "gamma": 1.117273242106498
+      },
+      "tree_stop": "bce"
+    },
+    "seed": 101,
+    "fixed_epochs": null,
+    "intervention": "standard",
+    "train_membership_sha256": "6495e73e025c4360c5e4fd232d4c0f2d763588bc61f4d5516bda168713f241b9",
+    "validation_membership_sha256": "5c923b4fdc4c8c2cffbc2d0e29c5715e9020498fa8ef98dc0a0375d4d949eecb"
+  },
+  "training": {
+    "fit_seconds": 0.005887249950319529,
+    "best_epoch": 2,
+    "epochs_completed": 2,
+    "parameter_count": null,
+    "curve": [
+      {
+        "epoch": 1,
+        "validation_objective": 0.6872562891244889
+      },
+      {
+        "epoch": 2,
+        "validation_objective": 0.6789185366034508
+      }
+    ]
+  },
+  "train_n": 800,
+  "train_positive": 407,
+  "checkpoint_sha256": "9780f568bdb6d73dceeeb5bec9b96a856d58a7ab43b98a6515407c41a59c2030",
+  "status": "completed",
+  "validation": {
+    "ap": 0.6561041983169873,
+    "auroc": 0.7258585858585858,
+    "brier": 0.24289542436599731,
+    "log_loss": 0.6789185404777527,
+    "accuracy": 0.66,
+    "balanced_accuracy": 0.6666666666666666,
+    "recall": 0.7333333333333333,
+    "sensitivity": 0.7333333333333333,
+    "specificity": 0.6,
+    "precision": 0.6,
+    "f1": 0.66,
+    "ece_10": 0.14162011653184892,
+    "tn": 66,
+    "fp": 44,
+    "fn": 24,
+    "tp": 66,
+    "n": 200,
+    "positive": 90,
+    "prevalence": 0.45,
+    "threshold": 0.5
+  }
+}
