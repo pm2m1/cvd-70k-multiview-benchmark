@@ -1,0 +1,63 @@
+{
+  "run": "smoke_concat",
+  "spec": {
+    "config": {
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "dropout": 0.0,
+      "optimizer": "adamw",
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "epochs": 2,
+      "patience": 2,
+      "batch": 256,
+      "stop": "ap",
+      "block": "missing",
+      "architecture": "concat",
+      "loss": "bce",
+      "family": "neural",
+      "blocks": 1,
+      "token_width": 16
+    },
+    "seed": 89,
+    "fit": "96d28f65277e551744800de3e134e95edb468e0e5e203ab0f5d27213de4d3244",
+    "stop": "3ca35e62d164cc204637b3bdd5560221b4dddf705a8ce303b9fc9b29ad49bb04"
+  },
+  "spec_hash": "ea9138a9245e12d4c0a46a5a247b7889b6221a1876c36dce2b1b19f1efeed6b5",
+  "checkpoint_sha256": "ed9adae20c78017071d01db9cbcea5cb4918ba88725e8c6444de5593dec60625",
+  "elapsed_seconds": 0.7054215841926634,
+  "best_epoch": 2,
+  "epochs_completed": 2,
+  "curve": [
+    {
+      "epoch": 0,
+      "train_loss": null,
+      "validation_ap": 0.761376348736916,
+      "validation_auroc": 0.746,
+      "validation_bce": 0.6188571453094482
+    },
+    {
+      "epoch": 1,
+      "train_loss": 0.6363584399223328,
+      "validation_ap": 0.8003267125569001,
+      "validation_auroc": 0.7876,
+      "validation_bce": 0.5841098427772522
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.5768210291862488,
+      "validation_ap": 0.8280270407554864,
+      "validation_auroc": 0.8228,
+      "validation_bce": 0.5659700632095337
+    }
+  ],
+  "parameter_count": 8241,
+  "total_parameters": 8241,
+  "fit_seconds": 0.24251008313149214,
+  "training_device": "mps",
+  "initial_checkpoint_eligible": false
+}
