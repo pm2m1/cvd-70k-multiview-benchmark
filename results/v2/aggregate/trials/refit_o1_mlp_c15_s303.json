@@ -1,0 +1,99 @@
+{
+  "specification": {
+    "run_id": "refit_o1_mlp_c15_s303",
+    "config": {
+      "family": "mlp",
+      "name": "missing_indicators",
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "hidden": [
+        96,
+        64
+      ],
+      "dropout": 0.0,
+      "lr": 0.0003,
+      "batch": 256,
+      "epochs": 120,
+      "patience": 16,
+      "stop": "ap",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "missing",
+      "scale": "standard"
+    },
+    "seed": 303,
+    "fixed_epochs": 9,
+    "intervention": "standard",
+    "train_membership_sha256": "80bb29cd84197ab5f23c74a22d1783aa8eb58cfa0cfd881c56a6af772458c169",
+    "validation_membership_sha256": null
+  },
+  "training": {
+    "best_epoch": 9,
+    "epochs_completed": 9,
+    "parameter_count": 9761,
+    "fit_seconds": 0.9892817079089582,
+    "curve": [
+      {
+        "epoch": 0,
+        "train_loss": null,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 1,
+        "train_loss": 0.6012001353444117,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.5487096006222111,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.543705923247798,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.5415611986804241,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.5397033498691787,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.5382457582928242,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.53681389234799,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.5358541060388031,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.53545504564625,
+        "lr": 0.0003
+      }
+    ],
+    "pos_weight": 1.0,
+    "fit_positive": 13060,
+    "fit_negative": 13075
+  },
+  "train_n": 26135,
+  "train_positive": 13060,
+  "checkpoint_sha256": "ee431131bcd0e121ecafb91b9632fc37397f030c274d18c979f0e92c446b0a8c",
+  "status": "completed"
+}

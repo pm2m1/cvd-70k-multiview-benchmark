@@ -1,0 +1,79 @@
+{
+  "specification": {
+    "run_id": "refit_o1_multiview_c7_s101",
+    "config": {
+      "family": "multiview",
+      "name": "batch256",
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "hidden": [
+        96,
+        64
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "batch": 256,
+      "epochs": 120,
+      "patience": 16,
+      "stop": "ap",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "base",
+      "scale": "standard"
+    },
+    "seed": 101,
+    "fixed_epochs": 5,
+    "intervention": "standard",
+    "train_membership_sha256": "80bb29cd84197ab5f23c74a22d1783aa8eb58cfa0cfd881c56a6af772458c169",
+    "validation_membership_sha256": null
+  },
+  "training": {
+    "best_epoch": 5,
+    "epochs_completed": 5,
+    "parameter_count": 7985,
+    "fit_seconds": 1.1320044589228928,
+    "curve": [
+      {
+        "epoch": 0,
+        "train_loss": null,
+        "lr": 0.001
+      },
+      {
+        "epoch": 1,
+        "train_loss": 0.5640180118503136,
+        "lr": 0.001
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.5480217691336304,
+        "lr": 0.001
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.5469262075875762,
+        "lr": 0.001
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.5444658307356841,
+        "lr": 0.001
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.5426585878745671,
+        "lr": 0.001
+      }
+    ],
+    "pos_weight": 1.0,
+    "fit_positive": 13060,
+    "fit_negative": 13075
+  },
+  "train_n": 26135,
+  "train_positive": 13060,
+  "checkpoint_sha256": "fea7cc00b0638c40d825e23a9d4f09ff4bb11bc2d434db398afcfc0140b38149",
+  "status": "completed"
+}

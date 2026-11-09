@@ -1,0 +1,79 @@
+{
+  "specification": {
+    "run_id": "imbalance_o2_q0.0742_weighted_s303",
+    "config": {
+      "family": "multiview",
+      "name": "robust_combined",
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "hidden": [
+        96,
+        64
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "batch": 256,
+      "epochs": 120,
+      "patience": 16,
+      "stop": "ap",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "both",
+      "scale": "robust"
+    },
+    "seed": 303,
+    "fixed_epochs": 5,
+    "intervention": "weighted",
+    "train_membership_sha256": "3896fe0d9c2c1e2138437810308cc8ee4c86d0349f21ceebe9c4611b280366c9",
+    "validation_membership_sha256": null
+  },
+  "training": {
+    "best_epoch": 5,
+    "epochs_completed": 5,
+    "parameter_count": 8321,
+    "fit_seconds": 0.6166488751769066,
+    "curve": [
+      {
+        "epoch": 0,
+        "train_loss": null,
+        "lr": 0.001
+      },
+      {
+        "epoch": 1,
+        "train_loss": 1.093558255690148,
+        "lr": 0.001
+      },
+      {
+        "epoch": 2,
+        "train_loss": 1.0383779942828963,
+        "lr": 0.001
+      },
+      {
+        "epoch": 3,
+        "train_loss": 1.0164483940950821,
+        "lr": 0.001
+      },
+      {
+        "epoch": 4,
+        "train_loss": 1.0000055228460107,
+        "lr": 0.001
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.9942264327785479,
+        "lr": 0.001
+      }
+    ],
+    "pos_weight": 12.475190839694656,
+    "fit_positive": 1048,
+    "fit_negative": 13074
+  },
+  "train_n": 14122,
+  "train_positive": 1048,
+  "checkpoint_sha256": "2b30a726dde8ba154290024a9f4f9d9ddeb09d69a33ae7fff4b5f4e2adb358e1",
+  "status": "completed"
+}

@@ -1,0 +1,68 @@
+{
+  "specification": {
+    "run_id": "inner_o0_j0_logistic_c1_s101",
+    "config": {
+      "family": "logistic",
+      "name": "C1.0",
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "hidden": [
+        96,
+        64
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "batch": 1024,
+      "epochs": 60,
+      "patience": 8,
+      "stop": "bce",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "base",
+      "scale": "standard",
+      "C": 1.0
+    },
+    "seed": 101,
+    "fixed_epochs": null,
+    "intervention": "standard",
+    "train_membership_sha256": "fc438034db62c291e7673c999948da131131dd0ee7ed839aa84390cada6bbb0a",
+    "validation_membership_sha256": "84b100f17413ffc853666b062b901718c62558e8d7c638c9a6354d7b24ad1ca4"
+  },
+  "training": {
+    "fit_seconds": 0.008503541816025972,
+    "best_epoch": 1,
+    "epochs_completed": 1,
+    "parameter_count": 17,
+    "curve": []
+  },
+  "train_n": 17421,
+  "train_positive": 8705,
+  "checkpoint_sha256": "9e7d53fb226ef8ba6f60c6357c2057333ac0bdf9a26d826025e4738f100654cb",
+  "status": "completed",
+  "validation": {
+    "ap": 0.7711889865215102,
+    "auroc": 0.7892822250104294,
+    "brier": 0.18763233721256256,
+    "log_loss": 0.5626809597015381,
+    "accuracy": 0.726208242452072,
+    "balanced_accuracy": 0.7261792255650837,
+    "recall": 0.6756260050539857,
+    "sensitivity": 0.6756260050539857,
+    "specificity": 0.7767324460761817,
+    "precision": 0.7514052120592744,
+    "f1": 0.7115035684044998,
+    "ece_10": 0.03175697801201672,
+    "tn": 3385,
+    "fp": 973,
+    "fn": 1412,
+    "tp": 2941,
+    "n": 8711,
+    "positive": 4353,
+    "prevalence": 0.4997130065434508,
+    "threshold": 0.5
+  }
+}
