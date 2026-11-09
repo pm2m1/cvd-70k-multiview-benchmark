@@ -12,3 +12,13 @@ Supply the original privately downloaded ZIP and recreate V1 audited raw file/sp
 Completed successful registered predictor fits: 375. Failed trial attempts retained: 3. Summed model-fit runtime: 607.7 seconds (not wall-clock because tracks overlap). Three probe fits are included; synthetic pytest optimization is not counted as research fits. Environment and dependency versions: execution_manifest.json/environment.json and the separate configs/v3/uv.lock. MPS is validated for multiview/attention; deterministic ranking-loss indexing and FT run CPU. Native tree libraries execute in isolated CPU processes. Corrections are in execution_corrections.json.
 
 Publication contains no raw data, per-row predictions, trained weights or private preprocessing. Kaggle metadata still reports Unknown licence; source-data redistribution rights are not assumed. Public aggregates cannot substitute for the source dataset or trained models. CI runs synthetic tests without private data; local real-data tests additionally verify memberships, hashes and numerical outputs.
+
+## Fresh public checkout versus local resume
+
+Published trial records are evidence, not sufficient resume caches: weights are intentionally private. With the privately audited raw data/splits available, use:
+
+```sh
+uv run --project configs/v3 python scripts/v3/reproduce.py ~/Desktop/cvd70k-v3-reproduction --run
+```
+
+The destination must not exist. This creates a detached worktree at the current commit, clears only its newly created V3 generated outputs and links the original local raw/processed directories for reading. The original checkout and all V1/V2 evidence stay untouched. The wrapper performs375 new registered fits; it was not invoked during the completed study to avoid unnecessary duplicate fitting. Direct `sh scripts/v3/run.sh` is for an originating workspace with compatible private caches or the prepared fresh worktree. Missing weights cannot be represented as completed local fits.

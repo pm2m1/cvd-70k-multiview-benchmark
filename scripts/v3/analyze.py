@@ -660,7 +660,7 @@ def analysis():
             summary(small, "comparison_method"),
             ["comparison_method", "ap", "auroc", "brier", "recall"],
         )
-        + "\n\nP25 fitting budget, 20 stopping labels (10/class), same source checkpoint and paired draws. The new policy was already chosen using the main100-label stopping design and its disjoint100-label selection role; it was not reselected after this sensitivity. The other80 stopping labels are withheld. This tests checkpoint allocation for a fixed chosen policy, not a fully retuned20-label pipeline. Selected and full-cost procedures access220 target labels in total; head accesses70. No predictor fit was added after outer evaluation.\n",
+        + "\n\nP25 fitting budget, 20 stopping labels (10/class), same source checkpoint and paired draws. The new policy was already chosen using the main100-label stopping design and its disjoint100-label selection role; it was not reselected after this sensitivity. The other80 stopping labels are withheld. This tests checkpoint allocation for a fixed chosen policy, not a fully retuned20-label pipeline. Selected and full-cost procedures access220 target labels in total. Head fitting/stopping uses70; the sensitivity manifest conservatively also charges100 policy-selection labels, recording170 accessible labels for this fixed control. No predictor fit was added after outer evaluation.\n",
     )
     # Reports are generated from records; no invented successful method.
     primary = tc["p1000:selected_new_policy minus full_cost"]
@@ -952,6 +952,10 @@ def analysis():
     with (DOC / "SOFT_ADAPTATION.md").open("a") as f:
         f.write(
             f"\nThe learned-radial retained gates reached at most{radialmax:.5f}, below their cap1. Thus the cap1 projection was not active at retained checkpoints; this variant is close to a reparameterized L2-SP fit, not evidence of an independently learned clinical gate. Fixed caps also scale effective update steps. Evidence caps and learned radial norms must not be conflated. No unconstrained joint sigmoid-gate/delta model was executed.\n"
+        )
+    with (DOC / "REPRODUCIBILITY.md").open("a") as f:
+        f.write(
+            "\n## Fresh public checkout versus local resume\n\nPublished trial records are evidence, not sufficient resume caches: weights are intentionally private. To refit from a public checkout with the privately audited raw data/splits available, run `uv run --project configs/v3 python scripts/v3/reproduce.py ~/Desktop/cvd70k-v3-reproduction --run`. The destination must not exist. This creates a detached worktree at the current commit, clears only its newly created V3 generated outputs and links the original local raw/processed directories for reading. The original checkout and all V1/V2 evidence stay untouched. The wrapper performs375 new registered fits; it was not invoked during the completed study to avoid unnecessary duplicate fitting. `sh scripts/v3/run.sh` directly is for an originating workspace with compatible local checkpoints, or for the prepared fresh worktree. Device selection uses validated MPS when available and CPU otherwise; FT/ranking paths remainCPU. Missing private files cannot be represented as completed local fits.\n"
         )
     # Extra concise index makes deliverables discoverable without editing historical README.
     report(

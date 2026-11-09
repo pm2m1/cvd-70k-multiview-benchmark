@@ -166,3 +166,72 @@ def test_plot_table_reproduction(tmp_path):
         return (tmp_path / "fixture.png").read_bytes()
 
     assert render() == render()
+
+
+def test_fresh_reproduction_protects_existing_paths(tmp_path):
+    spec = importlib.util.spec_from_file_location("fresh_repro", "scripts/v3/reproduce.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    with pytest.raises(ValueError, match="must not exist"):
+        module.prepare_fresh(tmp_path, tmp_path)
+    with pytest.raises(ValueError, match="audited V1"):
+        module.prepare_fresh(tmp_path, tmp_path / "new")
+
+
+def test_fresh_worktree_preserves_original_data_and_results(tmp_path):
+    import subprocess
+
+    spec = importlib.util.spec_from_file_location("fresh_repro_complete", "scripts/v3/reproduce.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    source = tmp_path / "source"
+    source.mkdir()
+    for name, body in {
+        "data/raw/cardio_train.csv": "synthetic fixture only",
+        "data/processed/splits.csv": "synthetic split only",
+        "results/v3/aggregate/old.json": '{"synthetic":true}',
+    }.items():
+        p = source / name
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(body)
+    subprocess.run(["git", "init", "-q", str(source)], check=True)
+    subprocess.run(["git", "add", "."], cwd=source, check=True)
+    subprocess.run(
+        [
+            "git",
+            "-c",
+            "user.name=Synthetic",
+            "-c",
+            "user.email=fixture@example.invalid",
+            "commit",
+            "-qm",
+            "Synthetic reproduction fixture",
+        ],
+        cwd=source,
+        check=True,
+    )
+    # Real participant data are ignored in the actual repository; model that here.
+    subprocess.run(
+        ["git", "rm", "--cached", "-q", "data/raw/cardio_train.csv", "data/processed/splits.csv"],
+        cwd=source,
+        check=True,
+    )
+    subprocess.run(
+        [
+            "git",
+            "-c",
+            "user.name=Synthetic",
+            "-c",
+            "user.email=fixture@example.invalid",
+            "commit",
+            "-qm",
+            "Keep synthetic data untracked",
+        ],
+        cwd=source,
+        check=True,
+    )
+    fresh = module.prepare_fresh(source, tmp_path / "fresh")
+    assert (source / "results/v3/aggregate/old.json").read_text() == '{"synthetic":true}'
+    assert list((fresh / "results/v3/aggregate").iterdir()) == []
+    assert (fresh / "data/raw").is_symlink()
+    assert (fresh / "data/raw/cardio_train.csv").read_text() == "synthetic fixture only"
