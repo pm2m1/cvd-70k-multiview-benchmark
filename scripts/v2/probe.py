@@ -36,5 +36,13 @@ if __name__ == "__main__":
                 "error": repr(error),
                 "training_device": device,
             }
+    for family in ["ft_transformer", "tabnet"]:
+        if results["families"][family]["status"] == "failed":
+            cfg = copy.deepcopy(candidates(family)[0])
+            cfg.update(epochs=2, patience=2)
+            r = fit_trial("smoke_cpu_" + family, df.iloc[:800], df.iloc[800:], cfg, 101, "cpu")
+            p = predict_trial("smoke_cpu_" + family, df.iloc[800:])
+            assert len(p) == 200 and torch.isfinite(torch.tensor(p)).all()
+            results["families"][family].update(fallback_device="cpu", fallback_status="passed")
     write_json("results/v2/aggregate/device_probe.json", results)
     print(results)

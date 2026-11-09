@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -231,17 +232,19 @@ def evaluate():
     for run, h in lock["checkpoints"].items():
         if sha256(PRIVATE / "models" / f"{run}.joblib") != h:
             raise ValueError("Corrupt model " + run)
-    write_json(
-        AGG / "optimization_outer_access.json",
-        {
-            "opened_utc": datetime.now(timezone.utc).isoformat(),
-            "lock_sha256": sha256(AGG / "optimization_lock.json"),
-        },
-    )
+    if not (AGG / "optimization_outer_access.json").exists():
+        write_json(
+            AGG / "optimization_outer_access.json",
+            {
+                "opened_utc": datetime.now(timezone.utc).isoformat(),
+                "lock_sha256": sha256(AGG / "optimization_lock.json"),
+            },
+        )
     cfg = read_json(ROOT / "configs/v2/study.json")
     selection = read_json(AGG / "optimization_selections.json")
     df, parts = prepare_folds()
     rows = []
+    infeasible = []
     pred_dir = PRIVATE / "outer_predictions"
     pred_dir.mkdir(exist_ok=True)
 
@@ -256,6 +259,16 @@ def evaluate():
             np.savez_compressed(out, probability=pp, row=test.index.to_numpy())
             for operating, t in thresholds.items():
                 if t is None:
+                    infeasible.append(
+                        {
+                            "model": name,
+                            "outer": outer,
+                            "seed": seed,
+                            "calibration": kind,
+                            "operating": operating,
+                            "status": "infeasible_on_calibration",
+                        }
+                    )
                     continue
                 rows.append(
                     {
@@ -283,7 +296,9 @@ def evaluate():
                 settings = cfg["candidates"][family][c]
                 for seed in cfg["seeds"] if c in [0, selected] else [101]:
                     run = refit_id(outer, family, c, seed)
+                    inference_start = time.perf_counter()
                     p = predict_trial(run, test)
+                    inference_seconds = time.perf_counter() - inference_start
                     pc = predict_trial(run, cal)
                     info = read_json(TRIALS / f"{run}.json")["training"]
                     name = family + "/" + settings["name"]
@@ -294,6 +309,8 @@ def evaluate():
                         "parameter_count": info["parameter_count"],
                         "fit_seconds": info["fit_seconds"],
                         "best_epoch": info["best_epoch"],
+                        "inference_seconds": inference_seconds,
+                        "inference_rows_per_second": len(test) / inference_seconds,
                     }
                     emit(name, outer, seed, p, pc, cal.cardio.to_numpy(), test, metadata)
                     if c == selected:
@@ -377,6 +394,7 @@ def evaluate():
                         ("none", "platt"),
                     )
     pd.DataFrame(rows).to_csv(AGG / "optimization_metrics.csv", index=False)
+    write_json(AGG / "optimization_threshold_infeasible.json", infeasible)
     write_json(
         AGG / "optimization_complete.json",
         {

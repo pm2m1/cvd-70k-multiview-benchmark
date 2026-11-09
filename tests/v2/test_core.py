@@ -88,3 +88,34 @@ def test_training_reproducible_cpu():
     a, b = fit(), fit()
     for p, q in zip(a.parameters(), b.parameters(), strict=True):
         torch.testing.assert_close(p, q, rtol=0, atol=0)
+
+
+def test_official_ft_tokens_and_shape(frame):
+    pytest.importorskip("rtdl_revisiting_models")
+    from cvd70k.v2.models import FT
+
+    df, _ = clean(frame)
+    prep = Features().fit(df)
+    model = FT(prep, candidates("ft_transformer")[0])
+    output = model(torch.tensor(prep.transform(df.iloc[:4])))
+    assert output.shape == (4,) and torch.isfinite(output).all()
+
+
+def test_weighted_rank_metrics_and_bootstrap():
+    from sklearn.metrics import roc_auc_score
+
+    from cvd70k.v2.statistics import paired_interval, ranked_cache, weighted_scores
+
+    y = np.array([0, 1, 0, 1, 1, 0])
+    p = np.array([0.2, 0.2, 0.4, 0.8, 0.8, 0.9])
+    ap, auc = weighted_scores(ranked_cache(y, p), np.ones(len(y)))
+    assert ap == pytest.approx(average_precision_score(y, p))
+    assert auc == pytest.approx(roc_auc_score(y, p))
+    result = paired_interval(y, [p], [p], np.arange(len(y)), replicates=20)
+    assert result["ap_difference"] == 0 and result["auroc_difference"] == 0
+    np.testing.assert_allclose(result["ap_ci95"], [0, 0])
+
+
+def test_oof_incomplete_rejected():
+    with pytest.raises(ValueError):
+        convex_weights([0, 1], {"a": np.array([0.2, np.nan]), "b": np.array([0.3, 0.8])})

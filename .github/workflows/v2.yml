@@ -1,0 +1,22 @@
+name: v2-research-checks
+on:
+  push:
+    branches: [research/v2-optimization-transfer]
+  pull_request:
+jobs:
+  v2-tests:
+    runs-on: macos-15
+    env:
+      TABPFN_DISABLE_TELEMETRY: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: brew install libomp
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+      - run: uv sync --project configs/v2 --frozen
+      - run: uv run --project configs/v2 ruff check .
+      - run: uv run --project configs/v2 ruff format --check .
+      - run: uv run --project configs/v2 pytest -q
