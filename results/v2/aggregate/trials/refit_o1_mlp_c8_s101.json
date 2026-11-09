@@ -1,0 +1,94 @@
+{
+  "specification": {
+    "run_id": "refit_o1_mlp_c8_s101",
+    "config": {
+      "family": "mlp",
+      "name": "width32",
+      "embedding": 32,
+      "fusion": [
+        128,
+        64
+      ],
+      "hidden": [
+        192,
+        128
+      ],
+      "dropout": 0.0,
+      "lr": 0.0003,
+      "batch": 256,
+      "epochs": 120,
+      "patience": 16,
+      "stop": "ap",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "base",
+      "scale": "standard"
+    },
+    "seed": 101,
+    "fixed_epochs": 8,
+    "intervention": "standard",
+    "train_membership_sha256": "80bb29cd84197ab5f23c74a22d1783aa8eb58cfa0cfd881c56a6af772458c169",
+    "validation_membership_sha256": null
+  },
+  "training": {
+    "best_epoch": 8,
+    "epochs_completed": 8,
+    "parameter_count": 28737,
+    "fit_seconds": 0.9492742088623345,
+    "curve": [
+      {
+        "epoch": 0,
+        "train_loss": null,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 1,
+        "train_loss": 0.5632136914204156,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.549229552313865,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.5461580890621217,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.544441886679812,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.5425359033730921,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.5418133522621733,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.5402150046011219,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.5393289548193996,
+        "lr": 0.0003
+      }
+    ],
+    "pos_weight": 1.0,
+    "fit_positive": 13060,
+    "fit_negative": 13075
+  },
+  "train_n": 26135,
+  "train_positive": 13060,
+  "checkpoint_sha256": "453db5701926260a8328903f8a558a0d4169facc2bead987fd56b822f60510b9",
+  "status": "completed"
+}

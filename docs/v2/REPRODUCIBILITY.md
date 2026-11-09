@@ -64,3 +64,9 @@ Run `uv run --project configs/v2 python -m cvd70k.v2.learning_diagnostics` after
 development. A single-process eval/no-grad monitor records train metrics without changing
 optimizer/checkpoint logic; actual weight differences from original inner checkpoints are
 reported. These are three measurement refits, not additional hyperparameter candidates.
+
+The locked transfer executor's generic `positive`/`prevalence` metric fields overlapped its
+condition names. Reporting adds explicit `positive_budget`, `negative_budget` and
+`training_prevalence` from the frozen manifest. The original executor export is preserved
+privately; the normalization audit verifies every original column and metric value exactly.
+No prediction, checkpoint, mask, fit or selection changed during this metadata repair.

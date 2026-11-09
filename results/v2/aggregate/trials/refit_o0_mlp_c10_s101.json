@@ -1,0 +1,174 @@
+{
+  "specification": {
+    "run_id": "refit_o0_mlp_c10_s101",
+    "config": {
+      "family": "mlp",
+      "name": "regularized32",
+      "embedding": 32,
+      "fusion": [
+        128,
+        64
+      ],
+      "hidden": [
+        192,
+        128
+      ],
+      "dropout": 0.1,
+      "lr": 0.0003,
+      "batch": 256,
+      "epochs": 120,
+      "patience": 16,
+      "stop": "ap",
+      "optimizer": "adamw",
+      "weight_decay": 0.001,
+      "schedule": "cosine",
+      "features": "base",
+      "scale": "standard"
+    },
+    "seed": 101,
+    "fixed_epochs": 24,
+    "intervention": "standard",
+    "train_membership_sha256": "7514d18ffa864bdf07bf2ea271002140147f645b505b53abbf71c3ae32225cfa",
+    "validation_membership_sha256": null
+  },
+  "training": {
+    "best_epoch": 24,
+    "epochs_completed": 24,
+    "parameter_count": 28737,
+    "fit_seconds": 3.127028041984886,
+    "curve": [
+      {
+        "epoch": 0,
+        "train_loss": null,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 1,
+        "train_loss": 0.5687987881963658,
+        "lr": 0.0003
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.5547050298373367,
+        "lr": 0.00029871672920607153
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.5507759478917699,
+        "lr": 0.0002948888739433602
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.5477784452824467,
+        "lr": 0.000288581929876693
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.5457132159705624,
+        "lr": 0.0002799038105676658
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.5456418183009365,
+        "lr": 0.00026900300104368524
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.5430137296009808,
+        "lr": 0.0002560660171779821
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.5416683872425226,
+        "lr": 0.00024131421435130812
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.5426280447229864,
+        "lr": 0.00022500000000000002
+      },
+      {
+        "epoch": 10,
+        "train_loss": 0.5402576239189693,
+        "lr": 0.00020740251485476348
+      },
+      {
+        "epoch": 11,
+        "train_loss": 0.5389905920368815,
+        "lr": 0.00018882285676537813
+      },
+      {
+        "epoch": 12,
+        "train_loss": 0.5397668418330656,
+        "lr": 0.00016957892883300778
+      },
+      {
+        "epoch": 13,
+        "train_loss": 0.5389359386011413,
+        "lr": 0.00015000000000000001
+      },
+      {
+        "epoch": 14,
+        "train_loss": 0.5387414199788082,
+        "lr": 0.00013042107116699228
+      },
+      {
+        "epoch": 15,
+        "train_loss": 0.5385488662113188,
+        "lr": 0.00011117714323462191
+      },
+      {
+        "epoch": 16,
+        "train_loss": 0.5372479416939779,
+        "lr": 9.259748514523657e-05
+      },
+      {
+        "epoch": 17,
+        "train_loss": 0.5376814649241196,
+        "lr": 7.500000000000003e-05
+      },
+      {
+        "epoch": 18,
+        "train_loss": 0.5374859750051877,
+        "lr": 5.86857856486919e-05
+      },
+      {
+        "epoch": 19,
+        "train_loss": 0.5365081718974141,
+        "lr": 4.393398282201788e-05
+      },
+      {
+        "epoch": 20,
+        "train_loss": 0.5368952046450841,
+        "lr": 3.099699895631474e-05
+      },
+      {
+        "epoch": 21,
+        "train_loss": 0.5367550387985397,
+        "lr": 2.0096189432334194e-05
+      },
+      {
+        "epoch": 22,
+        "train_loss": 0.5356437184809544,
+        "lr": 1.1418070123306989e-05
+      },
+      {
+        "epoch": 23,
+        "train_loss": 0.5360182846931847,
+        "lr": 5.11112605663977e-06
+      },
+      {
+        "epoch": 24,
+        "train_loss": 0.5361049395506768,
+        "lr": 1.2832707939284424e-06
+      }
+    ],
+    "pos_weight": 1.0,
+    "fit_positive": 13058,
+    "fit_negative": 13074
+  },
+  "train_n": 26132,
+  "train_positive": 13058,
+  "checkpoint_sha256": "2fcf4938c2a561c98440c73975f5fc795db7ae9411d2c6f473ca5b0b57c1d343",
+  "status": "completed"
+}

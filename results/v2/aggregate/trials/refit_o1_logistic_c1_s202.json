@@ -1,0 +1,46 @@
+{
+  "specification": {
+    "run_id": "refit_o1_logistic_c1_s202",
+    "config": {
+      "family": "logistic",
+      "name": "C1.0",
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "hidden": [
+        96,
+        64
+      ],
+      "dropout": 0.0,
+      "lr": 0.001,
+      "batch": 1024,
+      "epochs": 60,
+      "patience": 8,
+      "stop": "bce",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "base",
+      "scale": "standard",
+      "C": 1.0
+    },
+    "seed": 202,
+    "fixed_epochs": 1,
+    "intervention": "standard",
+    "train_membership_sha256": "80bb29cd84197ab5f23c74a22d1783aa8eb58cfa0cfd881c56a6af772458c169",
+    "validation_membership_sha256": null
+  },
+  "training": {
+    "fit_seconds": 0.008185832761228085,
+    "best_epoch": 1,
+    "epochs_completed": 1,
+    "parameter_count": 17,
+    "curve": []
+  },
+  "train_n": 26135,
+  "train_positive": 13060,
+  "checkpoint_sha256": "0124d550cb51710a2de0e6999390bf2fc01499e01795c4f8dcc783455777e51a",
+  "status": "completed"
+}

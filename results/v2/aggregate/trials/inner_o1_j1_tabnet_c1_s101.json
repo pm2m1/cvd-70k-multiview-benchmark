@@ -1,0 +1,244 @@
+{
+  "specification": {
+    "run_id": "inner_o1_j1_tabnet_c1_s101",
+    "config": {
+      "family": "tabnet",
+      "name": "tabnet1",
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "hidden": [
+        96,
+        64
+      ],
+      "dropout": 0.0,
+      "lr": 0.01,
+      "batch": 1024,
+      "epochs": 120,
+      "patience": 16,
+      "stop": "ap",
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "features": "base",
+      "scale": "standard",
+      "decision_width": 16,
+      "steps": 5,
+      "lambda_sparse": 0.0001
+    },
+    "seed": 101,
+    "fixed_epochs": null,
+    "intervention": "standard",
+    "train_membership_sha256": "8aa49a8994e1a09554515e7a86b88dfe0e4d4de0c57e5f370a2137c203444b78",
+    "validation_membership_sha256": "0c5891b9ae5c81de2130ae46328071a7eb1c77b0ca936551e9c781abe3f343d6"
+  },
+  "training": {
+    "best_epoch": 15,
+    "epochs_completed": 31,
+    "parameter_count": 32256,
+    "fit_seconds": 15.634472290985286,
+    "curve": [
+      {
+        "epoch": 1,
+        "train_loss": 0.7423579862514037,
+        "validation_ap": 0.7286970610238328
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.6160871924557086,
+        "validation_ap": 0.7382154232742956
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.5981082251796601,
+        "validation_ap": 0.7612776739266668
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.5813440305032896,
+        "validation_ap": 0.7586154553714539
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.5731293706307179,
+        "validation_ap": 0.763902705214978
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.5714550613809661,
+        "validation_ap": 0.7545694029059371
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.5660763440381725,
+        "validation_ap": 0.7679890935459806
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.5651845764522712,
+        "validation_ap": 0.7546807711846526
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.5754243831660794,
+        "validation_ap": 0.7704483288758744
+      },
+      {
+        "epoch": 10,
+        "train_loss": 0.5645032850178805,
+        "validation_ap": 0.7670965819714249
+      },
+      {
+        "epoch": 11,
+        "train_loss": 0.5620402044610653,
+        "validation_ap": 0.7707926849602793
+      },
+      {
+        "epoch": 12,
+        "train_loss": 0.5603905170745429,
+        "validation_ap": 0.7684587465085717
+      },
+      {
+        "epoch": 13,
+        "train_loss": 0.5589281967520385,
+        "validation_ap": 0.7746795379600413
+      },
+      {
+        "epoch": 14,
+        "train_loss": 0.5580825390237748,
+        "validation_ap": 0.7738508975275872
+      },
+      {
+        "epoch": 15,
+        "train_loss": 0.5636994571068399,
+        "validation_ap": 0.7755253360730294
+      },
+      {
+        "epoch": 16,
+        "train_loss": 0.560952704964262,
+        "validation_ap": 0.774017895330073
+      },
+      {
+        "epoch": 17,
+        "train_loss": 0.5639421877453806,
+        "validation_ap": 0.7750707575303392
+      },
+      {
+        "epoch": 18,
+        "train_loss": 0.563367199361379,
+        "validation_ap": 0.7727027406096204
+      },
+      {
+        "epoch": 19,
+        "train_loss": 0.5595159659810413,
+        "validation_ap": 0.7690654432824608
+      },
+      {
+        "epoch": 20,
+        "train_loss": 0.5586570661696302,
+        "validation_ap": 0.774772177086289
+      },
+      {
+        "epoch": 21,
+        "train_loss": 0.5582307109710161,
+        "validation_ap": 0.7720248396986598
+      },
+      {
+        "epoch": 22,
+        "train_loss": 0.5597768425394134,
+        "validation_ap": 0.7687363898902686
+      },
+      {
+        "epoch": 23,
+        "train_loss": 0.5575476976793988,
+        "validation_ap": 0.7748301050884633
+      },
+      {
+        "epoch": 24,
+        "train_loss": 0.5609293675291307,
+        "validation_ap": 0.7743706107877019
+      },
+      {
+        "epoch": 25,
+        "train_loss": 0.5577619335211341,
+        "validation_ap": 0.7748374302925297
+      },
+      {
+        "epoch": 26,
+        "train_loss": 0.5605171540661401,
+        "validation_ap": 0.7715174019143037
+      },
+      {
+        "epoch": 27,
+        "train_loss": 0.5568263594221916,
+        "validation_ap": 0.7720056787784708
+      },
+      {
+        "epoch": 28,
+        "train_loss": 0.5563405705658638,
+        "validation_ap": 0.7746047241934959
+      },
+      {
+        "epoch": 29,
+        "train_loss": 0.5631945186847935,
+        "validation_ap": 0.7749020331847314
+      },
+      {
+        "epoch": 30,
+        "train_loss": 0.5612658366246219,
+        "validation_ap": 0.7740028217090738
+      },
+      {
+        "epoch": 31,
+        "train_loss": 0.5639279808770417,
+        "validation_ap": 0.774029514093558
+      }
+    ],
+    "aggregate_feature_importance": [
+      0.09949151852296502,
+      0.02048393144572116,
+      0.3394531162999686,
+      0.031238733686298165,
+      0.022916065228494136,
+      0.06304916612448422,
+      0.0286397152839588,
+      0.024784915390863305,
+      0.030449056618703573,
+      0.11997372723170417,
+      0.040838183569783304,
+      0.02045153275768407,
+      0.03742484739277512,
+      0.052489834981596054,
+      0.03674071395506392,
+      0.031574941509936505
+    ]
+  },
+  "train_n": 17424,
+  "train_positive": 8707,
+  "checkpoint_sha256": "2b720ff66f0c058b418e6260a0842938efa2be0e01b13720cd38a75750e77ba2",
+  "status": "completed",
+  "validation": {
+    "ap": 0.7755253669891763,
+    "auroc": 0.7890798041198345,
+    "brier": 0.18673400580883026,
+    "log_loss": 0.5564363598823547,
+    "accuracy": 0.7246010790953966,
+    "balanced_accuracy": 0.7245700849124008,
+    "recall": 0.6705720192970366,
+    "sensitivity": 0.6705720192970366,
+    "specificity": 0.7785681505277651,
+    "precision": 0.7515447991761071,
+    "f1": 0.7087531868398689,
+    "ece_10": 0.017094001188513307,
+    "tn": 3393,
+    "fp": 965,
+    "fn": 1434,
+    "tp": 2919,
+    "n": 8711,
+    "positive": 4353,
+    "prevalence": 0.4997130065434508,
+    "threshold": 0.5
+  }
+}

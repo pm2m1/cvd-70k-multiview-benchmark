@@ -119,3 +119,25 @@ def test_weighted_rank_metrics_and_bootstrap():
 def test_oof_incomplete_rejected():
     with pytest.raises(ValueError):
         convex_weights([0, 1], {"a": np.array([0.2, np.nan]), "b": np.array([0.3, 0.8])})
+
+
+def test_training_ap_instrumentation_preserves_model():
+    from cvd70k.training.engine import set_seed
+    from cvd70k.v2 import engine
+    from cvd70k.v2.learning_diagnostics import training_metric_monitor
+
+    torch.set_num_threads(1)
+    x = np.random.default_rng(4).normal(size=(40, 16)).astype("float32")
+    y = (x[:, 0] > 0).astype(int)
+    cfg = {**candidates("multiview")[0], "epochs": 2, "batch": 20}
+    set_seed(101)
+    plain = MultiView([2, 2, 3, 6, 3], cfg)
+    plain, _ = engine.train_network(plain, x, y, x, y, cfg, 101)
+    set_seed(101)
+    monitored = MultiView([2, 2, 3, 6, 3], cfg)
+    records = []
+    with training_metric_monitor(x, y, records):
+        monitored, info = engine.train_network(monitored, x, y, x, y, cfg, 101)
+    assert len(records) == len(info["curve"]) and "train_ap" in records[0]
+    for a, b in zip(plain.parameters(), monitored.parameters(), strict=True):
+        torch.testing.assert_close(a, b, rtol=0, atol=0)

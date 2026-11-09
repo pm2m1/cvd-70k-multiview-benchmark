@@ -51,3 +51,47 @@ def test_report_and_figure_reproducible(tmp_path, monkeypatch):
 
     assert render() == render()
     assert (tmp_path / "fixture.pdf").stat().st_size > 1000
+
+
+def test_transfer_metadata_preserves_evaluation_metrics(tmp_path):
+    from cvd70k.utils.io import write_json
+    from cvd70k.v2.metadata import normalize_transfer_metadata
+
+    aggregate = tmp_path / "results/v2/aggregate"
+    aggregate.mkdir(parents=True)
+    (tmp_path / "private/v2").mkdir(parents=True)
+    path = aggregate / "transfer_metrics.csv"
+    frame = pd.DataFrame(
+        [
+            {
+                "key": "p25_n25_s101",
+                "method": "logical",
+                "run": "fixture",
+                "positive": 2,
+                "prevalence": 0.5,
+                "ap": 0.73123456789,
+                "auroc": 0.75,
+            }
+        ]
+    )
+    frame.to_csv(path, index=False)
+    write_json(
+        aggregate / "transfer_manifest.json",
+        [
+            {
+                "key": "p25_n25_s101",
+                "method": "logical",
+                "run": "fixture",
+                "positive": 25,
+                "negative": 25,
+                "prevalence": 0.5,
+            }
+        ],
+    )
+    normalize_transfer_metadata(tmp_path)
+    output = pd.read_csv(path)
+    assert output.positive.iloc[0] == 2 and output.positive_budget.iloc[0] == 25
+    assert output.ap.iloc[0] == pytest.approx(frame.ap.iloc[0])
+    before = path.read_bytes()
+    normalize_transfer_metadata(tmp_path)
+    assert before == path.read_bytes()

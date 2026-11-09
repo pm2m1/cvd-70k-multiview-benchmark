@@ -72,7 +72,7 @@ def audit(root):
             changed.append(name)
     if changed:
         raise ValueError("V1 historical files changed " + str(changed))
-    staged = git("diff", "--cached", "--name-only").decode().splitlines()
+    staged = git("diff", "--cached", "--name-only", BASE).decode().splitlines()
     allowed = (
         "configs/v2/",
         "src/cvd70k/v2/",

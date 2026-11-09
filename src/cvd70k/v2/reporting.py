@@ -11,6 +11,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.ticker import FormatStrFormatter, MaxNLocator
 from scipy.stats import spearmanr
 from sklearn.metrics import precision_recall_curve, roc_curve
 
@@ -160,12 +161,14 @@ def transfer_statistics(frame, cfg):
             b = []
             for seed in cfg["seeds"]:
                 left = main[
-                    (main.positive == positive)
+                    (main.positive_budget == positive)
                     & (main.seed == seed)
                     & (main.method == "calibrated_logical")
                 ].iloc[0]
                 right = main[
-                    (main.positive == positive) & (main.seed == seed) & (main.method == reference)
+                    (main.positive_budget == positive)
+                    & (main.seed == seed)
+                    & (main.method == reference)
                 ].iloc[0]
                 for collection, record in [(a, left), (b, right)]:
                     data = np.load(PRIVATE / "transfer_predictions" / f"{record.run}.npz")
@@ -274,6 +277,8 @@ def plots(optimization, transfer, evidence, cfg):
             ax.errorbar(g[metric].mean(), i, xerr=g[metric].std(), fmt="o", capsize=3)
         ax.set_yticks(range(len(names)), names)
         ax.set(xlabel=metric.upper(), title="V2 outer-fold mean ± fold/seed SD")
+        ax.xaxis.set_major_locator(MaxNLocator(4))
+        ax.xaxis.set_major_formatter(FormatStrFormatter("%.3f"))
     save(fig, "v2_outer_comparison")
     fig, axes = plt.subplots(1, 2, figsize=(12, 4))
     for family in ["mlp", "multiview"]:
@@ -337,11 +342,19 @@ def plots(optimization, transfer, evidence, cfg):
         "target_xgboost",
     ]
     main = transfer[transfer.design == "support"]
-    for method in methods:
+    for method_index, method in enumerate(methods):
         g = main[main.method == method]
         for ax, metric in zip(axes, ["ap", "auroc"], strict=True):
-            stat = g.groupby("positive")[metric].agg(["mean", "std"])
-            ax.errorbar(stat.index, stat["mean"], yerr=stat["std"], marker=".", label=method, lw=1)
+            stat = g.groupby("positive_budget")[metric].agg(["mean", "std"])
+            ax.errorbar(
+                stat.index,
+                stat["mean"],
+                yerr=stat["std"],
+                label=method,
+                lw=1,
+                color=plt.get_cmap("tab20")(method_index),
+                marker=["o", "s", "^", "D", "v", "P", "X", ">", "<", "h", "*"][method_index],
+            )
             ax.set(
                 xlabel="Target fitting positive budget (+ equal negatives)",
                 ylabel=metric.upper(),
@@ -370,13 +383,39 @@ def plots(optimization, transfer, evidence, cfg):
     fig.colorbar(image, ax=axes[0], label="Fraction ADAPT")
     for i, module in enumerate(MODULES):
         g = primary[primary.module == module].groupby("positive_budget").U.mean()
-        axes[1].plot(g.index, g, marker=".", label=module)
+        if g.notna().any():
+            axes[1].plot(g.index, g, marker=".", label=module)
     axes[1].axhline(0.75, color="black", ls="--", lw=1)
     axes[1].set(
         xscale="log", xlabel="Positive fitting budget", ylabel="Mean upper retention bound U"
     )
     axes[1].legend(fontsize=7)
     save(fig, "v2_selector_masks_uncertainty")
+    comparisons = read_json(AGG / "transfer_comparisons.json")
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+    for reference in ["full", "head_only", "random_matched", "full_cost_matched"]:
+        records = [r for r in comparisons if r["b"] == reference]
+        for ax, metric, ci in zip(
+            axes, ["ap_difference", "auroc_difference"], ["ap_ci95", "auroc_ci95"], strict=True
+        ):
+            points = np.array([r[metric] for r in records])
+            interval = np.array([r[ci] for r in records])
+            ax.errorbar(
+                [r["positive_budget"] for r in records],
+                points,
+                yerr=np.vstack([points - interval[:, 0], interval[:, 1] - points]),
+                marker="o",
+                capsize=2,
+                label=reference,
+            )
+            ax.axhline(0, color="gray", ls="--")
+            ax.set(
+                xscale="log",
+                xlabel="Positive fitting budget",
+                ylabel="Logical − comparator " + metric.split("_")[0].upper(),
+            )
+    axes[1].legend(fontsize=8)
+    save(fig, "v2_transfer_paired_differences")
     # Actual saved inner learning curves for chosen multiview candidates.
     selections = read_json(AGG / "optimization_selections.json")
     fig, axes = plt.subplots(1, 3, figsize=(14, 4))
@@ -486,7 +525,7 @@ def additional_plots(optimization, transfer):
         )
     ]
     for name, g in main.groupby("method"):
-        stat = g.groupby("positive")[["ap", "best_epoch"]].mean()
+        stat = g.groupby("positive_budget")[["ap", "best_epoch"]].mean()
         for ax, metric in zip(axes, ["ap", "best_epoch"], strict=True):
             ax.plot(stat.index, stat[metric], marker=".", label=name)
             ax.set(xscale="log", xlabel="Positive fitting budget", ylabel=metric)
@@ -501,7 +540,13 @@ def diagnostic_ap_plot():
         curve = pd.DataFrame(record["training"]["curve"])
         ax.plot(curve.epoch, curve.train_ap, label="Train AP (eval mode)")
         ax.plot(curve.epoch, curve.validation_ap, label="Inner validation AP")
-        ax.set(xlabel="Epoch", ylabel="AP", title=f"Diagnostic refit, outer{record['outer']}")
+        ax.set(
+            xlabel="Epoch",
+            ylabel="AP",
+            title=f"Diagnostic refit, outer{record['outer']}",
+            ylim=(0.5, 0.85),
+        )
+        ax.axvline(record["training"]["best_epoch"], ls=":", color="gray", label="Retained epoch")
         ax.legend(fontsize=8)
     save(fig, "v2_training_validation_ap")
 
@@ -538,7 +583,117 @@ def tabnet_stability():
     return result
 
 
+def ensemble_complementarity():
+    selections = read_json(AGG / "optimization_selections.json")
+    from cvd70k.v2.data import prepare_folds
+
+    df, parts = prepare_folds()
+    rows = []
+    for outer, part in parts.items():
+        pool = df.loc[part["fit"]]
+        y = pool.cardio.to_numpy()
+        pred = {}
+        for family, c in selections[str(outer)]["selected"].items():
+            p = np.full(len(pool), np.nan)
+            for j in range(3):
+                p[part["inner"] == j] = np.load(
+                    PRIVATE / "inner_predictions" / f"inner_o{outer}_j{j}_{family}_c{c}_s101.npz"
+                )["probability"]
+            pred[family] = p
+        for a, b in itertools.combinations(pred, 2):
+            correlation = float(np.corrcoef(pred[a] - y, pred[b] - y)[0, 1])
+            rows.append(
+                {
+                    "outer": outer,
+                    "a": a,
+                    "b": b,
+                    "inner_oof_residual_correlation": correlation,
+                    "threshold_050_prediction_disagreement": float(
+                        np.mean((pred[a] >= 0.5) != (pred[b] >= 0.5))
+                    ),
+                }
+            )
+    write_json(AGG / "ensemble_complementarity.json", rows)
+    return rows
+
+
+def conclusions_from_records(oc, tc, stability, optimization, transfer):
+    def get(a, b):
+        return next(r for r in oc if r["a"] == a and r["b"] == b)
+
+    def effect(name, reference):
+        r = get("multiview/" + name, "multiview/" + reference)
+        return f"{r['ap_difference']:+.6f} (95% CI {r['ap_ci95']})"
+
+    first, last = stability[0], stability[-1]
+    large = {r["b"]: r for r in tc if r["positive_budget"] == last["positive_budget"]}
+    supported = [r["positive_budget"] for r in tc if r["b"] == "full" and r["ap_ci95"][0] > 0]
+    all_control_support = []
+    for p in [r["positive_budget"] for r in stability]:
+        refs = [
+            r
+            for r in tc
+            if r["positive_budget"] == p and r["b"] in ["full", "head_only", "random_matched"]
+        ]
+        if all(r["ap_ci95"][0] > 0 for r in refs):
+            all_control_support.append(p)
+    selector_conclusion = (
+        "No budget established a conditional AP advantage over all three prespecified controls."
+        if not all_control_support
+        else f"Conditional AP advantages over all three controls occurred at budgets {all_control_support}; confirmation remains external and multiplicity-limited."
+    )
+    ensemble = get("selection/best_ensemble", "selection/best_single")
+    cal = (
+        optimization[
+            (optimization.model == "multiview/selected") & (optimization.operating == "fixed_050")
+        ]
+        .groupby("calibration")[["ap", "brier", "ece_10"]]
+        .mean()
+    )
+    rare = optimization[
+        (optimization.model == "imbalance/0.0742/standard") & (optimization.calibration == "none")
+    ]
+    default = rare[rare.operating == "fixed_050"]
+    threshold = rare[rare.operating == "balanced_accuracy"]
+    return f"""The gain is a modest internal pipeline effect; the matched width/batch ablations do not
+establish an intrinsic five-view advantage over independently tuned families. Cap120−60 AP:
+{effect("epochs120", "v1_equivalent")}; cap200−60: {effect("epochs200", "v1_equivalent")}.
+AP−BCE stopping: {effect("ap_stop", "patience16")}. Missing-indicator−base AP:
+{effect("missing_indicators", "batch256")}. This feature may encode collection/quality artifacts.
+
+{selector_conclusion}
+Budgets with a positive conditional logical−full AP interval: {supported}; budgets with
+positive intervals against **all** full/head/matched-random controls: {all_control_support}.
+These are multiplicity-unadjusted exploratory comparisons, not confirmatory significance.
+From{first["positive_budget"]}→{last["positive_budget"]} positives, mean ADAPT count changed
+{sum(first["adapt_frequency"].values()):.2f}→{sum(last["adapt_frequency"].values()):.2f}, Jaccard
+agreement {first["adapt_set_jaccard"]:.3f}→{last["adapt_set_jaccard"]:.3f}, invalid geometry
+{first["invalid_geometry_fraction"]:.1%}→{last["invalid_geometry_fraction"]:.1%}, and all-SHARE/head-only
+mask frequency {first["head_only_fraction"]:.1%}→{last["head_only_fraction"]:.1%}. Selecting modules
+for ADAPT and retaining an updated checkpoint are different; epochzero may retain source weights.
+
+At the largest budget, logical AP/AUROC differences versus full are
+{large["full"]["ap_difference"]:+.6f}/{large["full"]["auroc_difference"]:+.6f}, versus head
+{large["head_only"]["ap_difference"]:+.6f}/{large["head_only"]["auroc_difference"]:+.6f}, versus matched
+random {large["random_matched"]["ap_difference"]:+.6f}/{large["random_matched"]["auroc_difference"]:+.6f}.
+The full-cost-matched comparison has AP difference {large["full_cost_matched"]["ap_difference"]:+.6f},
+95% interval {large["full_cost_matched"]["ap_ci95"]}; all AUROC intervals are reported separately.
+
+Inner-selected ensemble−single AP is {ensemble["ap_difference"]:+.6f},95% interval
+{ensemble["ap_ci95"]}; positive point estimates alone cannot establish benefit. Five-view
+Brier raw/Platt {cal.loc["none", "brier"]:.6f}/{cal.loc["platt", "brier"]:.6f}; ECE
+{cal.loc["none", "ece_10"]:.6f}/{cal.loc["platt", "ece_10"]:.6f}. Isotonic AP
+{cal.loc["isotonic", "ap"]:.6f} versus raw {cal.loc["none", "ap"]:.6f}; ties can change ranking.
+At7.42% training prevalence, standard recall@.50 is{default.recall.mean():.6f}, while validation
+threshold BA is{threshold.balanced_accuracy.mean():.6f}. Calibration and thresholds address
+score/prior mismatch, not an independent rare-prevalence clinical population.
+"""
+
+
 def generate(skip_bootstrap=False):
+    from cvd70k.v2.metadata import normalize_transfer_metadata
+
+    normalize_transfer_metadata(ROOT)
     cfg = read_json(ROOT / "configs/v2/study.json")
     optimization = pd.read_csv(AGG / "optimization_metrics.csv")
     transfer = pd.read_csv(AGG / "transfer_metrics.csv")
@@ -558,11 +713,35 @@ def generate(skip_bootstrap=False):
     ]
     selected = raw[raw.model.str.endswith("/selected")]
     selected_table = table(selected)
+    resource_rows = []
+    for name, g in selected.groupby("model"):
+        parameters = (
+            "N/A (tree)" if g.parameter_count.isna().all() else f"{g.parameter_count.mean():.0f}"
+        )
+        resource_rows.append(
+            [
+                name,
+                parameters,
+                f"{g.fit_seconds.mean():.3f}",
+                f"{g.inference_seconds.mean():.4f}",
+                f"{g.best_epoch.mean():.1f}",
+            ]
+        )
+    resource_table = markdown_table(
+        [
+            "Selected pipeline",
+            "Mean trainable parameters",
+            "Mean refit seconds",
+            "Mean outer CPU prediction seconds",
+            "Mean refit epochs/rounds",
+        ],
+        resource_rows,
+    )
     folds_table = table(selected, ["outer", "model"])
     optimization.groupby(["model", "calibration", "operating"], dropna=False)[CORE].agg(
         ["mean", "std"]
     ).to_csv(AGG / "optimization_summary.csv")
-    transfer.groupby(["positive", "negative", "method"])[
+    transfer.groupby(["positive_budget", "negative_budget", "method"])[
         CORE + ["trainable_parameters", "total_target_labels"]
     ].agg(["mean", "std"]).to_csv(AGG / "transfer_summary.csv")
     selections = read_json(AGG / "optimization_selections.json")
@@ -614,7 +793,7 @@ def generate(skip_bootstrap=False):
     ]
     ablation_table = table(ablations, metrics=("ap", "auroc", "brier", "best_epoch", "fit_seconds"))
     primary = transfer[transfer.design == "support"]
-    transfer_table = table(primary, ["positive", "method"])
+    transfer_table = table(primary, ["positive_budget", "method"])
     transfer_comparison = markdown_table(
         ["Fit positives", "Logical − comparator", "ΔAP", "AP95% CI", "ΔAUROC", "AUROC95% CI"],
         [
@@ -668,6 +847,14 @@ fold metrics. They condition on fitted models and fixed folds, do not quantify f
 search uncertainty, and are not multiple-comparison adjusted. Neither folds nor seeds are
 independent external populations. No outer result revises inner model selection.
 
+## Measured resources
+
+{resource_table}
+
+Times are descriptive on a shared machine with some concurrent jobs; inference includes
+checkpoint loading and preprocessing. Tree scalar-count fields are N/A rather than invented
+neural-equivalent parameter counts.
+
 ## Prespecified training/capacity effects, seed101 in all three outer folds
 
 - 120 versus60 maximum epochs: {effect("epochs120", "v1_equivalent")}.
@@ -680,7 +867,9 @@ independent external populations. No outer result revises inner model selection.
 
 These are prespecified paired internal ablations, not independent clinical causal effects.
 Regularized optimizer/schedule combinations are bundled candidates, so their individual
-components are not causally identified. Gradient clipping was not added to the V1-equivalent
+components are not causally identified. Flat-network capacity matching is approximate,
+not exact at every width; actual parameter counts accompany every refit. Missingness gains
+may exploit data-quality/collection artifacts and require independent sensitivity validation. Gradient clipping was not added to the V1-equivalent
 control. Scratch epochzero is diagnostic only; refit epochs derive from inner folds.
 
 {hp_table}
@@ -708,6 +897,9 @@ FT-Transformer uses official `rtdl-revisiting-models`0.0.2, native numeric/categ
 three registered candidates and validation-AP stopping. TabNet uses established
 `pytorch-tabnet`4.1.0, two candidates and sklearn AP. Both ran on CPU after the recorded MPS
 smoke failures; five-view/flat ran on reliable MPS. XGBoost is isolated from Torch/OpenMP.
+FT/TabNet candidates use the base clinical encoding; optimized five-view/flat/XGBoost
+pipelines can select registered engineered blocks. Thus comparisons reflect these explicitly
+different pipeline/search budgets, not an intrinsic architecture ranking.
 Its AP-stopping candidates use negative sklearn non-interpolated AP, not `aucpr`; other
 candidates stop on log loss. Inner candidate selection always uses sklearn AP.
 
@@ -901,10 +1093,7 @@ It was executed on real recorded age subgroups with disjoint label roles. Main e
 
 {conclusion}
 
-More positive support is not itself proof that a selector becomes useful. Evaluate whether
-paired intervals support advantage over full, head-only and matched random, whether weak
-source geometry still forces abstention, and whether full-cost-matched training is competitive.
-A positive conditional point difference in one budget is exploratory evidence only.
+{conclusions_from_records(oc, tc, stability, optimization, transfer)}
 
 No genuine cross-cohort experiment executed: **EXTERNAL_CROSS_COHORT_TRANSFER_NOT_EXECUTED**.
 TabPFN also NOT EXECUTED because licensed access is unverified. FT-Transformer/TabNet are
@@ -932,6 +1121,12 @@ properly permitted data with an explicit endpoint and a locked confirmatory eval
         "cv_inner_fits": sum(r["specification"]["run_id"].startswith("inner_") for r in trials),
         "v1_fits_unchanged": 690,
         "calibration_fits_reported_separately": True,
+        "calibration_mapping_fits": int(
+            optimization[optimization.calibration != "none"]
+            .groupby(["model", "outer", "seed", "calibration"])
+            .ngroups
+        ),
+        "convex_ensemble_weight_searches": 15,
         "hardware": "Apple M5 Pro48GiB; MPS flat/five-view/adaptation; CPU FT/TabNet/native trees",
         "failures": read_json(AGG / "device_probe.json")["families"],
         "external_status": "EXTERNAL_CROSS_COHORT_TRANSFER_NOT_EXECUTED",
@@ -976,7 +1171,12 @@ V1 validation/test rows are never used for V2 model development or evaluation.
     )
     plots(optimization, transfer, evidence, cfg)
     additional_plots(optimization, transfer)
-    tabnet_stability()
+    mask_stability = tabnet_stability()
+    with (DOC / "TABULAR_MODEL_COMPARISON.md").open("a") as f:
+        f.write(
+            f"\nAcross9 selected TabNet fits, aggregate training attention-mask importance had mean pairwise Spearman {mask_stability['mean_pairwise_spearman']:.4f} and minimum {mask_stability['minimum_pairwise_spearman']:.4f}. These are global mask summaries, not causal clinical explanations. Exact step masks can differ when selected decision-step counts differ; no patient-level mask is released.\n"
+        )
+    ensemble_complementarity()
     diagnostic_ap_plot()
     print("V2 reports and figures generated", flush=True)
 

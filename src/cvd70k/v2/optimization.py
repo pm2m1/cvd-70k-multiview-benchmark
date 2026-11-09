@@ -232,6 +232,13 @@ def evaluate():
     for run, h in lock["checkpoints"].items():
         if sha256(PRIVATE / "models" / f"{run}.joblib") != h:
             raise ValueError("Corrupt model " + run)
+    ensemble_selections = read_json(AGG / "optimization_selections.json")
+    for outer, selection_record in ensemble_selections.items():
+        if (
+            sha256(PRIVATE / f"outer{outer}_ensembles.joblib")
+            != selection_record["ensemble_artifact_sha256"]
+        ):
+            raise ValueError("Ensemble checkpoint integrity mismatch")
     if not (AGG / "optimization_outer_access.json").exists():
         write_json(
             AGG / "optimization_outer_access.json",
@@ -253,6 +260,14 @@ def evaluate():
             calibrator = Calibrator(kind).fit(cal_y, cal_p)
             cp = calibrator.transform(cal_p)
             pp = calibrator.transform(p)
+            calibration_dir = PRIVATE / "calibrators"
+            calibration_dir.mkdir(exist_ok=True)
+            if kind != "none":
+                joblib.dump(
+                    calibrator,
+                    calibration_dir
+                    / f"{name.replace(chr(47), chr(95) * 2)}_o{outer}_s{seed}_{kind}.joblib",
+                )
             thresholds = operating_points(cal_y, cp)
             diag = calibration_diagnostic(test.cardio.to_numpy(), pp)
             out = pred_dir / f"{name.replace(chr(47), chr(95) * 2)}_o{outer}_s{seed}_{kind}.npz"

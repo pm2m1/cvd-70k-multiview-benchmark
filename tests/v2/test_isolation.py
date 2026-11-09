@@ -50,5 +50,24 @@ def test_completed_target_label_accounting():
     )
     np.testing.assert_array_equal(df.total_target_labels, total)
     logical = df[df.method == "calibrated_logical"]
-    assert set(logical.positive) == {25, 100, 250, 500, 1000}
-    assert logical.groupby(["positive", "negative"]).seed.nunique().eq(3).all()
+    assert set(logical.positive_budget) == {25, 100, 250, 500, 1000}
+    assert logical.groupby(["positive_budget", "negative_budget"]).seed.nunique().eq(3).all()
+
+
+def test_published_v2_locks_and_metric_counts():
+    for name in ["optimization_lock.json", "transfer_lock.json"]:
+        path = Path("results/v2/aggregate") / name
+        if not path.exists():
+            pytest.skip("Study not locked in this checkout")
+        lock = read_json(path)
+        for source, expected in lock["source_sha256"].items():
+            assert sha256(source) == expected
+    for name in ["optimization_metrics.csv", "transfer_metrics.csv"]:
+        path = Path("results/v2/aggregate") / name
+        if not path.exists():
+            pytest.skip("Evaluation not completed in this checkout")
+        data = pd.read_csv(path)
+        assert (data[["tn", "fp", "fn", "tp"]].sum(axis=1) == data.n).all()
+        assert (data.tp + data.fn == data.positive).all()
+    counts = read_json("results/v2/aggregate/folds.json")
+    assert counts["eligible_v1_partition"] == "train only" and counts["n"] == 48999

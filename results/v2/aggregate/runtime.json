@@ -1,0 +1,41 @@
+{
+  "successful_predictor_fits": 1054,
+  "diagnostic_refits": 3,
+  "standard_trial_fits": 787,
+  "adaptation_fits": 264,
+  "fit_seconds": 2254.0493304585107,
+  "cv_inner_fits": 495,
+  "v1_fits_unchanged": 690,
+  "calibration_fits_reported_separately": true,
+  "calibration_mapping_fits": 207,
+  "convex_ensemble_weight_searches": 15,
+  "hardware": "Apple M5 Pro48GiB; MPS flat/five-view/adaptation; CPU FT/TabNet/native trees",
+  "failures": {
+    "multiview": {
+      "status": "passed",
+      "training_device": "mps",
+      "best_epoch": 2
+    },
+    "ft_transformer": {
+      "status": "failed",
+      "error": "RuntimeError(\"embedding_dense_backward_mps does not have a deterministic implementation, but you set 'torch.use_deterministic_algorithms(True)'. You can turn off determinism just for this operation, or you can use the 'warn_only=True' option, if that's acceptable for your application. You can also file an issue at https://github.com/pytorch/pytorch/issues to help us prioritize adding deterministic support for this operation.\")",
+      "training_device": "mps",
+      "fallback_device": "cpu",
+      "fallback_status": "passed"
+    },
+    "tabnet": {
+      "status": "failed",
+      "error": "RuntimeError(\"Tensor for argument #1 'mat1' is on CPU, but expected it to be on GPU (while checking arguments for mm)\")",
+      "training_device": "mps",
+      "fallback_device": "cpu",
+      "fallback_status": "passed"
+    },
+    "xgboost": {
+      "status": "passed",
+      "training_device": "mps",
+      "best_epoch": 2
+    }
+  },
+  "external_status": "EXTERNAL_CROSS_COHORT_TRANSFER_NOT_EXECUTED",
+  "tabpfn_status": "NOT_EXECUTED"
+}
