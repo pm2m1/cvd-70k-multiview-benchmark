@@ -76,7 +76,7 @@ def fit_predictor(run, fit, stop, cfg, seed, device):
         if cfg["family"] == "neural":
             set_seed(seed)
             model = build(prep, cfg)
-            used = "cpu" if cfg["architecture"] == "ft" else device
+            used = "cpu" if cfg["architecture"] == "ft" or cfg.get("loss") == "rank" else device
             model, info = train(
                 model,
                 prep.transform(fit),
@@ -252,7 +252,7 @@ def source_model(bundle):
 def representations(model, prep, df):
     model.eval()
     with torch.no_grad():
-        _, features = model(torch.tensor(prep.transform(df)))
+        _, features = model(torch.tensor(prep.transform(df)), representations=True)
     return {m: v.numpy() for m, v in features.items()}
 
 

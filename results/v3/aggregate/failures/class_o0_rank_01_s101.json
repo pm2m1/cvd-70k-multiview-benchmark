@@ -1,0 +1,30 @@
+{
+  "run": "class_o0_rank_01_s101",
+  "error": "RuntimeError(\"index_put_with_accumulate_mps does not have a deterministic implementation, but you set 'torch.use_deterministic_algorithms(True)'. You can turn off determinism just for this operation, or you can use the 'warn_only=True' option, if that's acceptable for your application. You can also file an issue at https://github.com/pytorch/pytorch/issues to help us prioritize adding deterministic support for this operation.\")",
+  "spec": {
+    "config": {
+      "embedding": 16,
+      "fusion": [
+        64,
+        32
+      ],
+      "dropout": 0.0,
+      "optimizer": "adamw",
+      "lr": 0.001,
+      "weight_decay": 0.0001,
+      "schedule": "constant",
+      "epochs": 120,
+      "patience": 16,
+      "batch": 256,
+      "stop": "ap",
+      "block": "missing",
+      "architecture": "concat",
+      "loss": "rank",
+      "rank_weight": 0.1,
+      "family": "neural"
+    },
+    "seed": 101,
+    "fit": "6daebc0cfcdd230beb9f32f78312778e2202b6aac8213371e80d598981122aa4",
+    "stop": "469bd01ebbf5d907778822faf52189f63f58d718061716580f1d12a59190354f"
+  }
+}

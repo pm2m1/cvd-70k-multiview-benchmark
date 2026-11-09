@@ -79,7 +79,10 @@ def train(model, x, y, xs, ys, cfg, seed, device="cpu", zero=False, penalty=None
         for idx in torch.randperm(len(xx), generator=generator).to(device).split(cfg["batch"]):
             opt.zero_grad(set_to_none=True)
             loss = loss_value(model(xx[idx]), yy[idx], cfg)
-            if hasattr(model, "gates") and model.gates.requires_grad:
+            if (
+                isinstance(getattr(model, "gates", None), nn.Parameter)
+                and model.gates.requires_grad
+            ):
                 loss = (
                     loss + cfg.get("gate_penalty", 0.0) * ((model.gates.sigmoid() - 0.5) ** 2).sum()
                 )

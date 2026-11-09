@@ -1,0 +1,7 @@
+# Target-label accounting
+
+The development-selected new-policy workflow accesses `4P+200` distinct target labels: 300, 1,200 and 4,200 for P25/P250/P1000. Each has P fitting positives plus P negatives, an equally sized disjoint selector draw, 100 stopping labels and 100 policy-selection labels. These are not 25/250/1000-total-label experiments. The full-cost comparator fits the fitting+selector+policy-selection union and uses the same stopping set. Fixed head/full methods use 2P+100; fixed logical uses 4P+100. Source-only uses no target labels. Source fitting/stopping/reference labels are separately shared costs.
+
+`label_costs.csv` records all distinct role counts, reuses and workflow access. Candidate selection is charged even if it picks an evidence-free policy. No label is counted twice in the union. Logistic references are conservatively charged access to stopping labels although they do not use early stopping. Native tree stopping uses its assigned labels. Small-stopping sensitivity uses 20 labels, withholding the other80; total selected-policy access becomes4P+120. Source-label count and natural outer target counts are in roles.json. Compute costs differ and are not equated by label matching.
+
+All estimates are exploratory internal evidence on original V1 training records. Outer folds, repeated fits and shared source records are dependent. No external clinical validation or future-event prediction.

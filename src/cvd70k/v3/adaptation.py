@@ -83,7 +83,9 @@ class Radial(nn.Module):
                 [dict(self.base.named_parameters())[n].detach().flatten() for n in self.mapping[m]]
             )
             self.radii[m] = 0.1 * max(float(values.norm()), 1.0)
-            self.deltas[str(i)] = nn.Parameter(torch.zeros_like(values), requires_grad=caps[m] > 0)
+            self.deltas[str(i)] = nn.Parameter(
+                torch.zeros_like(values), requires_grad=bool(caps[m] > 0)
+            )
 
     def effective(self):
         params = dict(self.base.named_parameters())

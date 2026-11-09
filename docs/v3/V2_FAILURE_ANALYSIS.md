@@ -1,0 +1,11 @@
+# V2 failure analysis and V3 motivation
+
+Historical V2 development audit reproduced all 30 published calibrated-logical masks using the unchanged policy. It inspected 264 saved adaptation training records and verified 264 available checkpoint hashes without inference. Epoch-zero retention fraction was 0.356; median best epoch 2.0. Median retained-minus-source stopping AP was +0.00000. These are stopping-set improvements subject to checkpoint selection bias, not unbiased adaptation gains. See `results/v3/aggregate/v2_adaptation_checkpoint_diagnostics.csv`.
+
+V2's reported source-only ranking was strong and logical selection did not beat head-only or label-cost-matched full fine-tuning at 1,000 fitting positives. These frozen findings motivate source-preservation and smaller stopping-set studies; they do not identify a causal failure mechanism. More ADAPT decisions and mask agreement measured geometry stability, not predictive benefit. V2 used 2,191 stopping labels (1,330 positive) in addition to fitting and selector labels; V3 explicitly charges all target roles.
+
+Potential causes are hypotheses: binary freezing may be too coarse; representation shift may not predict useful adaptation; checkpoint noise and target-label allocation may dominate tiny effects; source representations may already transfer adequately. V3 tests constrained drift and geometry-weighted penalties with development-only single-module counterfactuals. Correlations between evidence and module benefit use only the dedicated V3 selection role. No outer result redesigns a selector. Source-only, full/head/random and target-only references remain necessary.
+
+MMD sample caps remain 128 in the exact reference; geometry uses the full selector budget. Higher support can narrow geometry uncertainty while leaving capped MMD noisy. The learned-meta-selector is infeasible: three overlapping age tasks do not supply independent meta-training populations. This prevents fitting a selector that memorizes a small collection of episodes.
+
+V2 historical performance is context; V3 uses different internal roles and cannot be ranked against historical numbers as though the populations were matched. V1/V2 configurations are refitted on the V3 classification roles for direct comparison. No external cohort or future-event validity follows.

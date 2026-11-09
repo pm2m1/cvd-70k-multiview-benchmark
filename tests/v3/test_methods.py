@@ -20,6 +20,8 @@ from cvd70k.v3.engine import loss_value, state_hash, train
 from cvd70k.v3.features import Representation
 from cvd70k.v3.models import build, total
 
+torch.set_num_threads(2)
+
 
 @pytest.fixture
 def fixture():
@@ -195,3 +197,41 @@ def test_reproducible_training(fixture):
         )
         results.append(state_hash(model))
     assert results[0] == results[1]
+
+
+def test_reference_representation_contract(fixture):
+    from cvd70k.v3.runner import representations
+
+    prep = Representation("base").fit(fixture)
+    source = MultiView(prep.dims, CFG)
+    features = representations(source, prep, fixture)
+    assert set(features) == set(MODULES)
+    assert features["fusion2"].shape == (len(fixture), 32)
+
+
+def test_radial_training_contract(fixture):
+    prep = Representation("base").fit(fixture.iloc[:40])
+    source = MultiView(prep.dims, CFG)
+    radial = Radial(source, {m: 0.5 for m in MODULES})
+    fitted, info = train(
+        radial,
+        prep.transform(fixture.iloc[:40]),
+        fixture.iloc[:40].cardio.to_numpy(),
+        prep.transform(fixture.iloc[40:]),
+        fixture.iloc[40:].cardio.to_numpy(),
+        {**CFG, "epochs": 2, "patience": 2},
+        1,
+        "cpu",
+        zero=True,
+        penalty=lambda m: m.regularizer(),
+        projection=lambda m: m.project(),
+    )
+    assert info["best_epoch"] in [0, 1, 2]
+    assert all(0 <= g["effective_gate"] <= 0.500001 for g in fitted.gates().values())
+
+
+def test_numpy_gate_controls():
+    source = MultiView([2, 2, 3, 6, 3], CFG)
+    cap = dict(zip(MODULES, np.random.default_rng(2).uniform(0, 1, 7), strict=True))
+    radial = Radial(source, cap)
+    assert radial(torch.randn(4, 16)).shape == (4,)
